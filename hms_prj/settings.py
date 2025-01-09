@@ -197,11 +197,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 JAZZMIN_SETTINGS = {
-    'site_header': "Desphixs",
-    'site_brand': "Your #1 marketplace for collectibles.",
-    'site_logo': "/images/logo.png",
+    'site_header': "CSC Booking System",
+    'site_brand': "Community through winter fun",
+    'site_logo': "/images/logo3.jpg",
     'copyright':  "All Right Reserved 2023",
-    "welcome_sign": "Welcome to Desphixs, Login Now.",
+    "welcome_sign": "Welcome to CSC",
     "topmenu_links": [
 
         {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
@@ -252,15 +252,15 @@ JAZZMIN_UI_TWEAKS = {
     "footer_small_text": False,
     "body_small_text": True,
     "brand_small_text": False,
-    "brand_colour": "navbar-indigo",
+    "brand_colour": "navbar-primary",
     "accent": "accent-olive",
-    "navbar": "navbar-indigo navbar-dark",
+    "navbar": "navbar-primary navbar-dark",
     "no_navbar_border": False,
     "navbar_fixed": False,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": False,
-    "sidebar": "sidebar-dark-indigo",
+    "sidebar": "sidebar-dark-primary",
     "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": False,
@@ -279,14 +279,25 @@ JAZZMIN_UI_TWEAKS = {
     }
 }
 
+# customColorPalette = [
+#     {"color": "hsl(4, 90%, 58%)", "label": "Red"},
+#     {"color": "hsl(340, 82%, 52%)", "label": "Pink"},
+#     {"color": "hsl(291, 64%, 42%)", "label": "Purple"},
+#     {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"},
+#     {"color": "hsl(231, 48%, 48%)", "label": "Indigo"},
+#     {"color": "hsl(207, 90%, 54%)", "label": "Blue"},
+# ]
 customColorPalette = [
-    {"color": "hsl(4, 90%, 58%)", "label": "Red"},
-    {"color": "hsl(340, 82%, 52%)", "label": "Pink"},
-    {"color": "hsl(291, 64%, 42%)", "label": "Purple"},
-    {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"},
-    {"color": "hsl(231, 48%, 48%)", "label": "Indigo"},
-    {"color": "hsl(207, 90%, 54%)", "label": "Blue"},
-]
+    {"color": "hsl(0, 78%, 50%)", "label": "Crimson"},
+    {"color": "hsl(334, 60%, 60%)", "label": "Soft Pink"},
+    {"color": "hsl(276, 40%, 45%)", "label": "Muted Purple"},
+    {"color": "hsl(250, 30%, 50%)", "label": "Slate Purple"},
+    {"color": "hsl(220, 20%, 55%)", "label": "Slate Blue"},
+    {"color": "hsl(210, 45%, 55%)", "label": "Steel Blue"},
+];
+
+
+
 
 CKEDITOR_5_CONFIGS = {
     "default": {
