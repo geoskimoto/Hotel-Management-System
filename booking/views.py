@@ -63,9 +63,16 @@ def add_to_selection(request):
         'children': request.GET['children'],
     }
 
+    # could just have a single line of code saving the data to the session like this:
+    # request.session['selection_data_obj'] = room_selection
+    # However, what happens if user updates the info?  It will save multiple sessions. So...
+    # update the request instead:
     if 'selection_data_obj' in request.session:
+        #If session data has already been saved, update each parameter (only has num of adults and children, but
+        # should probably also add room_number, checkin, and checkout at least.  He says he'll show later how to update
+        # these other parameters later meaning it maybe more diff than just adding like adult and child below?):
         if str(request.GET['id']) in request.session['selection_data_obj']:
-
+            #First retrieve session_data_obj and then overwrite new values:
             selection_data = request.session['selection_data_obj']
             selection_data[str(request.GET['id'])]['adult'] = int(room_selection[str(request.GET['id'])]['adult'])
             selection_data[str(request.GET['id'])]['children'] = int(room_selection[str(request.GET['id'])]['children'])
@@ -75,6 +82,7 @@ def add_to_selection(request):
             selection_data.update(room_selection)
             request.session['selection_data_obj'] = selection_data
     else:
+        #If session data hasn't been save yet, save it.
         request.session['selection_data_obj'] = room_selection
     data = {
         "data":request.session['selection_data_obj'], 
@@ -135,7 +143,20 @@ def delete_selection(request):
             total = room_price * days
         
     
-    context = render_to_string("hotel/async/selected_rooms.html", { "data":request.session['selection_data_obj'],  "total_selected_items": len(request.session['selection_data_obj']), "total":total, "total_days":total_days, "adult":adult, "children":children,    "checkin":checkin,    "checkout":checkout,    "hotel":hotel})
+    context = render_to_string(
+        "hotel/async/selected_rooms.html",
+        {
+            "data":request.session['selection_data_obj'],
+            "total_selected_items": len(request.session['selection_data_obj']),
+            "total":total,
+            "total_days":total_days,
+            "adult":adult,
+            "children":children,
+            "checkin":checkin,
+            "checkout":checkout,
+            "hotel":hotel
+        }
+    )
 
     print("data ======", context)
     

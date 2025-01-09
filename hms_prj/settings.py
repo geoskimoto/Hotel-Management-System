@@ -110,6 +110,14 @@ DATABASES = {
     }
 }
 
+# I think the default place session data is saved to is the database, but might as well actually define it here.
+# Later may want to change this to REDIS.
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+# SESSION_COOKIE_SECURE = True  # Ensures cookies are only sent over HTTPS
+SESSION_COOKIE_HTTPONLY = True  # Prevents JavaScript access to session cookies
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expire session on browser close
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -149,7 +157,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  #this is for production.  Don't fully understand it, but
+# directory will be automatically created when python manage.py collectstatic
+# (https://docs.djangoproject.com/en/5.1/ref/contrib/staticfiles/)
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
