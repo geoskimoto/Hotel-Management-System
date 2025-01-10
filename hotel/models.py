@@ -20,10 +20,9 @@ ICON_TPYE = (
 )
 
 ROOM_TYPES = (
-    ('King', 'King'),
-    ('Luxury', 'Luxury'),
-    ('Normal', 'Normal'),
-    ('Economic', 'Economic'),
+    ('Bunk', 'Bunk'),
+    ('Private Room', 'Private Room'),
+
 )
 
 

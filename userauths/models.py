@@ -12,14 +12,15 @@ import os
 
 
 IDENTITY_TYPE = (
-    ("national_id_card", "National ID Card"),
-    ("drivers_licence", "Drives Licence"),
+    ("drivers_licence", "Drivers Licence"),
     ("international_passport", "International Passport")
 )
 
 GENDER = (
     ("female", "Female"),
     ("male", "Male"),
+    ("non-binary", "Non-binary"),
+    ("prefer_not_to_say", "Prefer not to say")
 )
 
 TITLE = (
@@ -55,21 +56,38 @@ class Profile(models.Model):
     pid = ShortUUIDField(length=7, max_length=25, alphabet="abcdefghijklmnopqrstuvxyz123")
     image = models.ImageField(upload_to=user_directory_path, default="default.jpg", null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=1000, null=True, blank=True)
-    phone = models.CharField(max_length=100, null=True, blank=True)
-    gender = models.CharField(max_length=100, choices=GENDER, null=True, blank=True)
+    full_name = models.CharField(max_length=100, null=True, blank=True)
+    phone = models.CharField(max_length=13, null=True, blank=True)
 
-
-    country = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=1000, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
-    address = models.CharField(max_length=1000, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    zip_code = models.CharField(max_length=10, null=True, blank=True)
     
-    identity_type = models.CharField(choices=IDENTITY_TYPE, default="national_id_card", max_length=100, null=True, blank=True)
+    gender = models.CharField(max_length=100, choices=GENDER, null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    website_url = models.URLField(max_length=100, blank=True)
+    joining_comments = models.TextField(max_length=2000, blank=True)
+    emergency_contact = models.CharField(max_length=100, null=True, blank=True)
+    emergency_contact_phone = models.CharField(max_length=13, null=True, blank=True)
+    is_primary_member = models.BooleanField(default=True)
+    is_spouse_member = models.BooleanField(default=False)
+    is_child_member = models.BooleanField(default=False)
+
+    # family_member1 = models.CharField(max_length=100, null=True, blank=True)
+    # family_member2 = models.CharField(max_length=100, null=True, blank=True)
+    # family_member3 = models.CharField(max_length=100, null=True, blank=True)
+    # family_member4 = models.CharField(max_length=100, null=True, blank=True)
+    # family_member5 = models.CharField(max_length=100, null=True, blank=True)
+    # family_member6 = models.CharField(max_length=100, null=True, blank=True)
+
+    is_employee = models.BooleanField(default=False)
+    is_committee_member = models.BooleanField(default=False)
+    
+    identity_type = models.CharField(choices=IDENTITY_TYPE, default="drivers_license", max_length=100, null=True, blank=True)
     identity_image = models.ImageField(upload_to=user_directory_path, default="id.jpg", null=True, blank=True)
 
-    facebook = models.URLField(default="https://facebook.com/", null=True, blank=True)
-    twitter = models.URLField(default="https://twitter.com/", null=True, blank=True)
     wallet = models.DecimalField(decimal_places=2, max_digits=12, default=0.00)
     verified = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True, null=True, blank=True)

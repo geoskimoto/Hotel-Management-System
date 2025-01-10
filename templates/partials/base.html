@@ -58,7 +58,7 @@
             <div id="header">
                 <div class="container">
                     <div class="utf_left_side">
-                        <div id="logo"> <a href="/"><img src="{% static 'images/logo3.jpg' %}" alt=""></a> </div>
+                        <div id="logo"> <a href="/"><img src="{% static 'images/CSC/logo1.png' %}" alt=""></a> </div>
                         <div class="mmenu-trigger">
                             <button class="hamburger utfbutton_collapse" type="button">
 				<span class="utf_inner_button_box">
@@ -68,27 +68,27 @@
                         </div>
                         <nav id="navigation" class="style_one">
                             <ul id="responsive">
-                                <li><a class="current" href="{% url 'hotel:index' %}">Home</a></li>
-                                <li><a href="#">Hotels</a>
+                                <!-- <li><a class="current" href="{% url 'hotel:index' %}">Home</a></li> -->
+                                <li><a href="#">Lodge</a>
                                     <ul>
-                                        <li><a href="#">Luxury</a></li>
+                                        <li><a href="#">History</a></li>
                                         <li><a href="#">Business</a></li>
                                         <li><a href="#">Classic</a></li>
                                         <li><a href="#">Economy</a></li>
                                         
                                     </ul>
                                 </li>
-                                <li><a href="#">Account</a>
+                                <li><a href="{% url 'dashboard:dashboard' %}">Members</a>
                                     <ul>
                                         <li><a href="{% url 'dashboard:dashboard' %}">Dashboard</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Blog</a></li>
-                                <li><a href="#">Pages</a>
-                                    <ul>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Contact</a>
+                                    <!-- <ul>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
-                                    </ul>
+                                    </ul> -->
                                 </li>
                             </ul>
                         </nav>
@@ -197,16 +197,16 @@
         <div id="footer" class="footer_sticky_part">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4 col-sm-12 col-xs-12">
+                    <!-- <div class="col-md-4 col-sm-12 col-xs-12">
                         <h4>About Us</h4>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
-                    </div>
+                    </div> -->
                     <div class="col-md-2 col-sm-3 col-xs-6">
                         <h4>Useful Links</h4>
                         <ul class="social_footer_link">
                             <li><a href="#">Home</a></li>
-                            <li><a href="#">Listing</a></li>
-                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Membership Application</a></li>
+                            <!-- <li><a href="#">Blog</a></li> -->
                             <li><a href="#">Privacy Policy</a></li>
                             <li><a href="#">Contact</a></li>
                         </ul>
@@ -216,11 +216,11 @@
                         <ul class="social_footer_link">
                             <li><a href="#">Dashboard</a></li>
                             <li><a href="#">Profile</a></li>
-                            <li><a href="#">My Listing</a></li>
-                            <li><a href="#">Favorites</a></li>
+                            <li><a href="#">Bookings</a></li>
+                            <!-- <li><a href="#">Favorites</a></li> -->
                         </ul>
                     </div>
-                    <div class="col-md-2 col-sm-3 col-xs-6">
+                    <!-- <div class="col-md-2 col-sm-3 col-xs-6">
                         <h4>Pages</h4>
                         <ul class="social_footer_link">
                             <li><a href="#">Blog</a></li>
@@ -228,17 +228,17 @@
                             <li><a href="#">How It Work</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                         </ul>
-                    </div>
-                    <div class="col-md-2 col-sm-3 col-xs-6">
+                    </div> -->
+                    <!-- <div class="col-md-2 col-sm-3 col-xs-6">
                         <h4>Help</h4>
                         <ul class="social_footer_link">
-                            <li><a href="#">Sign In</a></li>
+                            <li><a href="#">Membership Application</a></li>
                             <li><a href="#">Register</a></li>
                             <li><a href="#">Add Listing</a></li>
                             <li><a href="#">Pricing</a></li>
                             <li><a href="#">Contact Us</a></li>
                         </ul>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="row">

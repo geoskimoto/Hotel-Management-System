@@ -214,8 +214,8 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to CSC",
     "topmenu_links": [
 
-        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"name": "Company", "url": "/admin/addons/company/"},
+        # {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        # {"name": "Company", "url": "/admin/addons/company/"},
         {"name": "Users", "url": "/admin/userauths/user/"},
 
         {"model": "AUTH_USER_MODEL.User"},

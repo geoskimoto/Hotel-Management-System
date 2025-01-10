@@ -1,0 +1,12 @@
+
+
+
+Features that are still needing logic and solutions for:
+
+* Need to delete other hotels (after fig out how to show hotels again in admin dashboard), make homepage just about CSC,
+    move booking page into dashboard after logging in, change "hotel" model to lodge (maybe able to do this with replace all? 
+    although dangerous af)
+* Need to be able to charge members for yearly memberships and meals
+* Add a recent activity/message board to member dashboards and have the ability to create messages on the admin dashboard.
+* Ability for multiple bunks to be booked on the same invoice and multiple members to be entered into invoice for each bunk...how current system is.
+* Section on main page for Cascade Newsletter

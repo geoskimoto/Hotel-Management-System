@@ -20,13 +20,13 @@
                           <div class="utf_list_box_listing_item_content">
                             <div class="inner">
                               <h3>{{booking.full_name|title}} <span class="utf_booking_listing_status">{{booking.payment_status|title}}</span></h3>
-                              <div class="utf_inner_booking_listing_list">
+                              <!-- <div class="utf_inner_booking_listing_list">
                                 <h5>Hotel Name:</h5>
                                 <ul class="utf_booking_listing_list">
                                   <li>{{booking.hotel.name}}</li>						  						  
                                 </ul>
-                              </div>
-                              <div class="utf_inner_booking_listing_list">
+                              </div> -->
+                              <!-- <div class="utf_inner_booking_listing_list">
                                 <h5>Hotel Address:</h5>
                                 <ul class="utf_booking_listing_list">
                                   <li><small>{{booking.hotel.address}}</small></li>						  						  
@@ -43,7 +43,7 @@
                                 <ul class="utf_booking_listing_list">
                                   <li>{{booking.hotel.mobile}}</li>						  						  
                                 </ul>
-                              </div>
+                              </div> -->
                               <hr>
                               <div class="utf_inner_booking_listing_list">
                                 <h5>Checkin Date:</h5>
@@ -63,7 +63,7 @@
                                   <li class="highlighted">{{ booking.total_days }} Days</li>
                                 </ul>
                               </div>
-                              <div class="utf_inner_booking_listing_list">
+                              <!-- <div class="utf_inner_booking_listing_list">
                                 <h5>Adults:</h5>
                                 <ul class="utf_booking_listing_list">
                                   <li class="highlighted">{{ booking.num_adults }} Adults</li>
@@ -74,7 +74,7 @@
                                 <ul class="utf_booking_listing_list">
                                   <li class="highlighted">{{ booking.num_children }} Adults</li>
                                 </ul>
-                              </div>
+                              </div> -->
                               <hr>
                               <div class="utf_inner_booking_listing_list">
                                 <h5>Full Name:</h5>
@@ -111,7 +111,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="buttons-to-right "> <a href="#" class="button gray reject"><i class="fas fa-receipt "></i> View Invoice</a> </div>
+                        <div class="buttons-to-right "> <a href="/invoice/{{ booking.booking_id }}" class="button gray reject"><i class="fas fa-receipt "></i> View Invoice</a> </div>
                         <div class="buttons-to-right margin-top-10"> <a href="#" class="button gray reject"><i class="fas fa-ban"></i> Cancel Booking</a> </div>
                       </li>
                       
