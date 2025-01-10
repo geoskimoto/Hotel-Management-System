@@ -110,15 +110,15 @@
                         <div class="receipt-header">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="receipt-left">
-                                    <img class="img-responsive" alt="iamgurdeeposahan" src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg" style="width: 71px; border-radius: 43px;" />
+                                    <img class="img-responsive" alt="iamgurdeeposahan" src="/static/images/CSC/logo1.png" style="width: 100px; border-radius: 50px;" />
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 text-left">
                                 <div class="receipt-right">
-                                    <h5 class="margin-top-10">Desphixs<span class="text-warning">.</span></h5>
-                                    <p><i class="fa fa-phone"></i> +1 3649-6589</p>
-                                    <p><i class="fa fa-envelope"></i> company@gmail.com</p>
-                                    <p><i class="fa fa-location-arrow"></i> 123 Main Street</p>
+                                    <h5 class="margin-top-10">Cascade Ski Club and Lodge<span class="text-warning">.</span></h5>
+                                    <p><i class="fa fa-phone"></i> +15032729204</p>
+                                    <p><i class="fa fa-globe"></i> http://www.cascadeskiclub.org/</p>
+                                    <p><i class="fa fa-location-arrow"></i> 30510 E Blossom Trail, Government Camp, OR 97028</p>
                                 </div>
                             </div>
                         </div>
@@ -154,8 +154,8 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Room Name</th>
-                                <th>Price</th>
+                                <th>Summary</th>
+                                <!-- <th>Price</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -170,7 +170,7 @@
                         </tbody>
                     </table>
                     <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-start">
+                        <!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-start">
                             <div class="receipt-right">
                                 <h5>Hotel Details</h5>
                                 <p class="mb-2"><b>Name: </b>{{booking.hotel.name}}</p>
@@ -180,16 +180,16 @@
                                 <p class="mb-2"><b>Email: </b> {{booking.hotel.email}}</p>
                                 <p class="mb-2"><b>Mobile: </b> {{booking.hotel.mobile}}</p>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-end">
                             <div class="receipt-right">
-                                <h5>Summary</h5>
+                                <!-- <h5>Summary</h5> -->
                                 <p class="mb-2"><b>Checkin: </b>{{booking.check_in_date}}</p>
                                 <p class="mb-2"><b>Checkout: </b>{{booking.check_out_date}}</p>
                                 <p class="mb-2"><b>Total Days: </b> {{booking.total_days}} Days</p>
                                 <p class="mb-2"><b>Adults: </b> {{booking.num_adults}} Adult</p>
                                 <p class="mb-2"><b>Chilren: </b> {{booking.num_children}} Children</p>
-                                <p class="mb-2"><b>VAT: </b> $0.00</p>
+                                <!-- <p class="mb-2"><b>VAT: </b> $0.00</p> -->
                                 
                                 {% if booking.saved != 0.00 %}
                                     <p class="mb-2 text-danger"><b>Discount: </b> -${{booking.saved}}</p>

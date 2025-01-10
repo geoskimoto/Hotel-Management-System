@@ -70,12 +70,12 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ['user', 'hotel', 'review', 'reply' ,'rating', 'active']
 
 
-# admin.site.register(Hotel, HotelAdmin)
+admin.site.register(Hotel, HotelAdmin)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(Booking, BookingAdmin)
-# admin.site.register(RoomServices, RoomServicesAdmin)
+admin.site.register(RoomServices, RoomServicesAdmin)
 # admin.site.register(Coupon, CouponAdmin)
 admin.site.register(Notification, NotificationAdmin)
-admin.site.register(Bookmark, BookmarkAdmin)
+# admin.site.register(Bookmark, BookmarkAdmin)
 # admin.site.register(Review, ReviewAdmin)
 
