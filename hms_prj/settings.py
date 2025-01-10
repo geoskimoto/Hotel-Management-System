@@ -214,14 +214,14 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to CSC",
     "topmenu_links": [
 
-        # {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
         # {"name": "Company", "url": "/admin/addons/company/"},
         # {"name": "Users", "url": "/admin/userauths/user/"},
 
         {"model": "AUTH_USER_MODEL.User"},
     ],
-    "hide_apps": ["hotel.Room"],
-    "hide_models": ["hotel.Room"],
+    # "hide_apps": ["hotel.Room"],
+    # "hide_models": ["hotel.Room"],
     
     "order_with_respect_to": [
         "hotel",

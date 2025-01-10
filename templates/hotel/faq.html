@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Cascade Ski Club</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        section {
+            padding: 40px;
+            margin: 20px auto;
+            max-width: 900px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        section h2 {
+            color: #003366;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        section p, section ul, section ol {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        section ul, section ol {
+            padding-left: 20px;
+        }
+
+        section li {
+            margin-bottom: 10px;
+        }
+
+        .faq-link {
+            display: inline-block;
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .faq-link:hover {
+            background-color: #ffcc00;
+            color: #003366;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>FAQ - Cascade Ski Club</h1>
+        <nav>
+            <ul>
+                <li><a href="#invoices">Invoices</a></li>
+                <li><a href="#bookings">Bookings</a></li>
+                <li><a href="#lodge">Lodge</a></li>
+                <li><a href="#meals">Meals</a></li>
+                <li><a href="#membership">Membership</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="invoices">
+        <h2>Invoices - How to Pay using Credit Notes or using PayPal</h2>
+        <p>There are two preferred ways to pay invoices: via Credit Notes or via Stripe.</p>
+        <ul>
+            <li><strong>Credit Notes:</strong> Use an open Credit Note (with a positive balance) to pay off invoices.</li>
+            <li><strong>Stripe:</strong> You can pay invoices via Stripe.</li>
+        </ul>
+        <p>You can still pay by check or cash. However, during peak times at the lodge (usually from 4 – 8 PM on weekends), the manager might be busy and unable to assist with payments.</p>
+        <p>All open invoices must be paid before you can make a booking. Additionally, you need to maintain an overall positive balance. To check your financial status, click the Membership link. The page will show the financial status for each household member. If the status is FALSE, you cannot make a booking. Pay your open invoices first by clicking Financial >> Invoices for a list of your invoices.</p>
+    </section>
+
+    <section id="bookings">
+        <h2>Bookings - How to Reserve and Pay for Bunks and Private Rooms</h2>
+        <p><strong>When and how can I make a reservation for bunks or private rooms?</strong></p>
+        <p>Reservations can be made up to 3 weeks in advance (rolling 2-week period). Under the Member tab, click on Booking > Make a Booking, then follow the instructions. You can only make bookings if you have a positive balance in your accounts. Check your financial position before starting a booking (under the Member tab, click Financial). You must also be current and paid up on your yearly dues, and all invoices (membership fees, locker fees, purchases, etc.) must be paid.</p>
+
+        <p><strong>Will I get a refund if I cancel a booking?</strong></p>
+        <p>You will receive a full refund if you cancel at least 72 hours in advance. Cancellations less than 72 hours in advance will not be refunded.</p>
+
+        <p><strong>Why can't I make a booking?</strong></p>
+        <p>There are several reasons why you may be unable to initiate or complete a booking. <a href="#">Click here</a> to go to the help page that explains these reasons.</p>
+    </section>
+
+    <section id="lodge">
+        <h2>Lodge - Accommodations, Amenities, Lockers and General Lodge Information</h2>
+        <p><strong>Do I have to be a member to stay at the lodge?</strong></p>
+        <p>Yes, you need to be a member to stay at the lodge. Guests can try out the lodge once and must be accompanied by a member.</p>
+
+        <p><strong>What type of accommodations are available?</strong></p>
+        <p>Cascade Lodge has bunk beds and 3 private rooms. You can reserve bunks or the private rooms up to 3 weeks (rolling 2-week period) in advance.</p>
+
+        <p><strong>Do I have to bring my own bedding?</strong></p>
+        <p>Yes, bring your own sleeping bag, pillow, and mattress cover. We provide clean, comfortable mattresses and small bedside lockers.</p>
+
+        <p><strong>Can I rent a locker for my gear and skis?</strong></p>
+        <p>Yes, we have lockers for rent at $75/year. Since the lockers are in high demand and are given out on a first-come first-serve basis, reserve yours early by i) paying your membership dues; and ii) emailing or calling the lodge.</p>
+
+        <p><strong>Can I bring a pet?</strong></p>
+        <p>No, we do not allow any pets on the premises.</p>
+    </section>
+
+    <section id="meals">
+        <h2>Meals - Meal Reservations and Payment Options</h2>
+        <p><strong>PLEASE NOTE:</strong> Meal reservations must be made 2 days in advance to assure optimum quantities and quality. At least 10 members/meal requests are needed for a particular meal to be produced! <a href="#">Click here</a> to check the status of requests for this week.</p>
+
+        <p><strong>Examples:</strong> For Saturday meals, a Thursday reservation is required.</p>
+
+        <p>Simply sign the Meal Sign-In Sheet at the entrance of the dining hall before you start your meal. Our manager will deduct the appropriate amount from your account. Please make sure you have enough account balance to cover the meals.</p>
+
+        <p><strong>To Reserve Meals for a Particular Day:</strong></p>
+        <p>If you are making a new booking:</p>
+        <ol>
+            <li>Click Bookings > Make a Booking.</li>
+            <li>During the booking process, you must select the correct number of meals requested (breakfast, lunch, and dinner) for each day.</li>
+            <li>Complete the booking process as normal.</li>
+        </ol>
+
+        <p>If you have an existing booking:</p>
+        <ol>
+            <li>Click Bookings > My Bookings.</li>
+            <li>Click on "Edit Meal Requests" within one of the displayed bookings.</li>
+            <li>Enter the correct number of meals requested in each box (breakfast, lunch, or dinner) for each day.</li>
+            <li>Click Continue, and you should get the message "Meal Requests Updated. Booking ID: NNNN."</li>
+        </ol>
+
+        <p>If you want a meal but are not planning on spending the night, call the lodge at 503-272-9204.</p>
+    </section>
+
+    <section id="membership">
+        <h2>Membership - Yearly Membership Fees, Payment Options, Invoices</h2>
+        <p><strong>How long is the membership season?</strong></p>
+        <p>The season at Cascade Ski Club runs from the beginning of September until the end of August.</p>
+
+        <p><strong>Are my membership fees tax deductible?</strong></p>
+        <p>No, membership fees are NOT tax deductible.</p>
+
+        <p><strong>What are "subscriptions"? And how can I pay them?</strong></p>
+        <p>Subscriptions are your yearly (seasonal) membership fees. These include your membership dues. If you just joined Cascade Ski Club,

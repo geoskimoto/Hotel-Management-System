@@ -71,10 +71,9 @@
                                 <!-- <li><a class="current" href="{% url 'hotel:index' %}">Home</a></li> -->
                                 <li><a href="#">Lodge</a>
                                     <ul>
-                                        <li><a href="#">History</a></li>
-                                        <li><a href="#">Business</a></li>
-                                        <li><a href="#">Classic</a></li>
-                                        <li><a href="#">Economy</a></li>
+                                        <li><a href="#">Club History</a></li>
+                                        <li><a href="#">Lodge Amenities</a></li>
+                                        
                                         
                                     </ul>
                                 </li>
@@ -296,7 +295,7 @@
         function initAutocomplete() {
             var input = document.getElementById('autocomplete-input');
             var autocomplete = new google.maps.places.Autocomplete(input);
-
+    
             autocomplete.addListener('place_changed', function() {
                 var place = autocomplete.getPlace();
                 if (!place.geometry) {
@@ -304,7 +303,7 @@
                     return;
                 }
             });
-
+    
             if ($('.main-search-input-item')[0]) {
                 setTimeout(function() {
                     $(".pac-container").prependTo("#autocomplete-container");
@@ -312,16 +311,16 @@
             }
         }
     </script>
+    
     <script>
         $(function() {
-
             var start = moment().subtract(0, 'days');
             var end = moment().add(2, 'days');
-
+    
             function cb(start, end) {
                 $('#booking-date-search').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             }
-            cb(start, end);
+    
             $('#booking-date-search').daterangepicker({
                 "opens": "right",
                 "autoUpdateInput": true,
@@ -329,25 +328,40 @@
                 startDate: start,
                 endDate: end
             }, cb);
-
-            cb(start, end);
-
+    
+            cb(start, end); // Call cb here only once after daterangepicker initialization
         });
-
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBlocks = document.querySelectorAll('.search_container_block');
+            searchBlocks.forEach(block => {
+                const bgImage = block.getAttribute('data-background-image');
+                if (bgImage) {
+                    block.style.backgroundImage = `url(${bgImage})`;
+                }
+            });
+        });
+    </script>
+    
+    <script>
         // Calendar animation and visual settings
         $('#booking-date-search').on('show.daterangepicker', function(ev, picker) {
             $('.daterangepicker').addClass('calendar-visible calendar-animated bordered-style');
             $('.daterangepicker').removeClass('calendar-hidden');
         });
+    
         $('#booking-date-search').on('hide.daterangepicker', function(ev, picker) {
             $('.daterangepicker').removeClass('calendar-visible');
             $('.daterangepicker').addClass('calendar-hidden');
         });
-
+    
         $(window).on('load', function() {
             $('#booking-date-search').val('');
         });
     </script>
+    
 </body>
 
 </html>

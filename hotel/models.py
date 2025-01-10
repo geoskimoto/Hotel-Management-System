@@ -26,23 +26,26 @@ ROOM_TYPES = (
 )
 
 
-SERVICES_TYPES = (
-    ('Food', 'Food'),
-    ('Cleaning', 'Cleaning'),
-    ('Technical', 'Technical'),
+FOOD_SERVICES_TYPES = (
+    ('Breakfast', 'Breakfast'),
+    ('Lunch', 'Lunch'),
+    ('Dinner', 'Dinner'),
+    ('Special Event Meal', 'Special Event Meal')
 )
 
 HOTEL_STATUS = (
-    ("Draft", "Draft"),
+    # ("Draft", "Draft"),
     ("Disabled", "Disabled"),
-    ("Rejected", "Rejected"),
-    ("In Review", "In Review"),
+    # ("Rejected", "Rejected"),
+    # ("In Review", "In Review"),
     ("Live", "Live"),
 )
 
 GENDER = (
     ("Male", "Male"),
     ("Female", "Female"),
+    ("Non-binary", "Non-binary"),
+    ("Prefer not to say", "Prefer not to say")
 )
 
 
@@ -93,7 +96,7 @@ class Hotel(models.Model):
     tags = TaggableManager(blank=True)
     views = models.PositiveIntegerField(default=0)
     featured = models.BooleanField(default=False)
-    hid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    hid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
     slug = models.SlugField(null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -134,7 +137,7 @@ class Hotel(models.Model):
 class HotelGallery(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     image = models.FileField(upload_to="hotel_gallery")
-    hgid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    hgid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
 
     def __str__(self):
         return str(self.hotel)
@@ -148,7 +151,7 @@ class HotelFeatures(models.Model):
     icon_type = models.CharField(max_length=100, null=True, blank=True, choices=ICON_TPYE)
     icon = models.CharField(max_length=100, null=True, blank=True)
     name = models.CharField(max_length=100)
-    hfid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    hfid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
 
     def __str__(self):
         return str(self.hotel)
@@ -161,7 +164,7 @@ class HotelFAQs(models.Model):
     question = models.CharField(max_length=1000)
     answer = models.TextField(null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
-    hfid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    hfid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
 
     def __str__(self):
         return str(self.hotel)
@@ -175,7 +178,7 @@ class RoomType(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     number_of_beds = models.PositiveIntegerField(default=0)
     room_capacity = models.PositiveIntegerField(default=0)
-    rtid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    rtid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
     slug = models.SlugField(null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
@@ -304,11 +307,11 @@ class CouponUsers(models.Model):
         ordering =['-id']
 
 
-class RoomServices(models.Model):
+class FoodServices(models.Model):
     booking = models.ForeignKey(Booking, null=True, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
-    service_type = models.CharField(max_length=20, choices=SERVICES_TYPES)
+    service_type = models.CharField(max_length=20, choices=FOOD_SERVICES_TYPES)
     price = models.DecimalField(decimal_places=2, max_digits=12, default=0.00)
 
     def str(self):
