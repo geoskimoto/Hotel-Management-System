@@ -16,4 +16,7 @@ urlpatterns = [
     path('api/checkout-session/<booking_id>/', views.create_checkout_session, name='api_checkout_session'),
     path('success/<booking_id>/', views.payment_success, name='success'),
     path('failed/<booking_id>/', views.payment_failed, name='failed'),
+    path('rates/', views.rates, name = 'rates'),
+    path('membership_rates/', views.membership_rates, name = 'membership_rates'),
+    path('faq/', views.faq, name='faq')
 ]

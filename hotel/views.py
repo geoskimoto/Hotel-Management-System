@@ -442,7 +442,16 @@ def update_room_status(request):
                 for r in b.room.all():
                     r.is_available = True
                     r.save()
-
-            
-
+                    
     return HttpResponse(today)
+
+
+
+def rates(request):
+    return render(request, 'hotel/rates.html')
+
+def membership_rates(request):
+    return render(request, 'hotel/membership_rates.html')
+
+def faq(request):
+    return render(request, 'hotel/faq.html')

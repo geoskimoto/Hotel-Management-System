@@ -81,15 +81,21 @@
             </div>
         </div> 
 
-        <div>
-            <h2>Use the following links for more information:</h2>
-            <ul>
-                <li><a href="#">Rates</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Lodge History</a></li>
-                <li><a href="#">Membership information and application</a></li>
-                <li><a href="#">Contact Info</a></li>
-            </ul>
+
+
+        <div id="footer" class="footer_sticky_part">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2 col-sm-3 col-xs-6">
+                        <h4>Use the following links for more information:</h4>
+                        <ul class="social_footer_link">
+                            <li><a href="{% url 'hotel:rates' %}">Rates</a></li>
+                            <li><a href="{% url 'hotel:faq' %}">FAQ</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
