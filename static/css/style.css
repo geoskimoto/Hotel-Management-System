@@ -1,3 +1,26 @@
+
+a {
+    color: #007BFF; /* Blue color for links */
+    text-decoration: none; /* Remove default underline */
+    font-weight: bold; /* Make the text bold */
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Add underline and color change on hover */
+a:hover {
+    text-decoration: underline; /* Add underline on hover */
+    color: #0056b3; /* Darker blue on hover */
+}
+
+/* Optional: Add a small space between the icon and text */
+a i {
+    margin-right: 8px;
+}
+
+
+
+
 body {
     color: #707070;
     font-size: 15px;
