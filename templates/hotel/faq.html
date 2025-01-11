@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - Cascade Ski Club</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
@@ -15,15 +17,13 @@
         }
 
         header {
-            background-color: #4470eb;
-            color: white;
             padding: 20px;
             text-align: center;
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
         }
 
         nav ul {
@@ -34,13 +34,7 @@
             gap: 20px;
         }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: color 0.3s;
-        }
+
 
         nav a:hover {
             color: #ffcc00;
@@ -57,12 +51,12 @@
 
         section h3 {
             color: #4470eb;
-            font-size: 2rem;
+            font-size: 2.4rem;
             margin-bottom: 20px;
         }
 
         section p, section ul, section ol {
-            font-size: 1rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             color: #555;
         }
@@ -109,6 +103,19 @@
     </style>
 </head>
 <body>
+
+<!--    <header>-->
+<!--        <h1>FAQ - Cascade Ski Club</h1>-->
+<!--        <nav>-->
+<!--            <ul>-->
+<!--                <li><a href="#invoices">Invoices</a></li>-->
+<!--                <li><a href="#bookings">Bookings</a></li>-->
+<!--                <li><a href="#lodge">Lodge</a></li>-->
+<!--                <li><a href="#meals">Meals</a></li>-->
+<!--                <li><a href="#membership">Membership</a></li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+<!--    </header>-->
 
     <header>
         <h1>FAQ - Cascade Ski Club</h1>
@@ -200,4 +207,10 @@
         <p>No, membership fees are NOT tax deductible.</p>
 
         <p><strong>What are "subscriptions"? And how can I pay them?</strong></p>
-        <p>Subscriptions are your yearly (seasonal) membership fees. These include your membership dues. If you just joined Cascade Ski Club,
+        <p>Subscriptions are your yearly (seasonal) membership fees. These include your membership dues. If you just
+            joined Cascade Ski Club,
+        </p>
+    </section>
+</body>
+
+{% endblock content %}

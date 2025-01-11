@@ -16,4 +16,12 @@ Features that are still needing logic and solutions for:
 * Section on main page for Cascade Newsletter
 * Change colors
 * Add about us, etc htmls
-* Fix strip api keys and test.
+* Fix stripe api keys and test.
+
+
+Things you need a better understanding of:
+* views - logic behind making the bookings
+* urls - how to use class based url mapping like this app is using as we ll as SLUGS
+* css, bootstrap familiarity
+* what the admin.py file is doing
+* stripe and paypal payments
