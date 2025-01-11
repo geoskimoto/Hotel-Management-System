@@ -141,7 +141,12 @@ class MemberApplication(models.Model):
     phone_number = models.CharField(max_length=30, blank=True) #make this with more appropriate constraints/formating.
     website_url = models.URLField(max_length=100, blank=True)
     joining_comments = CKEditor5Field(config_name='extends', null=True, blank=True)
-    
+ 
+class ApprovedEmail(models.Model):
+    email = models.EmailField(unique=True)
+
+    def __str__(self):
+        return self.email   
     
 @receiver(models.signals.pre_delete, sender=Profile)
 def delete_image_file(sender, instance, **kwargs):

@@ -4,57 +4,46 @@
 <div class="fullwidth_block search_categorie_block">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <h3 class="headline_part centered margin-top-75 margin-bottom-45">Sign In<span>Hi there! Welcome Back</span> </h3>
+            <div class="col-md-12 text-center">
+                <h1 class="py-5 mt-5 mb-4 text-primary font-weight-bold">Member Sign In</h1>
+                    <p>Only approved members are allowed to Sign In.  If your membership has been approved, but you haven't yet created an account, please create one 
+                        <a href="{% url 'userauths:sign-up' %}">here. </a>
+                        Otherwise, become a member by filling out a membership application 
+                        <a href="{% url 'userauths:membership_application' %}">here. </a>
+                    </p> 
             </div>
         </div>
     </div>
 
-    <div class="col-md-12">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="category_container_item_part card">
-                        <div class="utf_signin_form style_one">
-                            <ul class="utf_tabs_nav">
-                                <!-- <li class=""><a href="#tab1">Log In</a></li> -->
-                            </ul>
-                            <div class="tab_container alt">
-                                
-                                
-                                <div class="tab_content" id="tab2" style="display:none;">
-                                    <form method="post" class="register">
-                                        {% csrf_token %}
-                                        <p class="utf_row_form utf_form_wide_block">
-                                            <label for="password2">
-                                                <input class="input-text" type="email" name="email"  placeholder="Email Address" />
-                                            </label>
-                                        </p>
-                                        <p class="utf_row_form utf_form_wide_block">
-                                            <label for="password2">
-                                                <input class="input-text form-control " type="password" name="password"  placeholder="Password" />
-                                            </label>
-                                        </p>
-                                        <input type="submit" class="button border fw margin-top-10" name="register" value="Sign In" />
-                                    </form>
-                                </div>
+    <!-- Combined Card (Login + Image) -->
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="card shadow-sm w-100" style="border-radius: 10px;">
+            <div class="row no-gutters">
+                <!-- Left Side: Login Form -->
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                    <div class="card-body p-4">
+                        <h3 class="text-center text-primary mb-4">Sign In</h3>
+                        <form method="post" class="register">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="email" class="font-weight-bold">Email Address</label>
+                                <input class="form-control" type="email" name="email" id="email" placeholder="Enter your email" required />
                             </div>
-                        </div>
+                            <div class="form-group mt-3">
+                                <label for="password" class="font-weight-bold">Password</label>
+                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter your password" required />
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block mt-4">Sign In</button>
+                        </form>                        
                     </div>
                 </div>
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="category_container_item_part">
-                        <a href="#" class="category_fitem_box"> 
-                            <img src="{% static 'images/csc/lodge1.jpg' %}" style="width: 100%; height: 420px; object-fit: cover;" alt=""/>
-                           
-                        </a>
-                    </div>
+                <!-- Right Side: Image -->
+                <div class="col-md-6">
+                    <img src="{% static 'images/csc/lodge1.jpg' %}" class="card-img" alt="Your Image" style="object-fit: cover; height: 100%; border-radius: 10px;" />
                 </div>
-
             </div>
         </div>
-    </div>
+    </div>               
 </div>
 {% endblock content %}
-    
