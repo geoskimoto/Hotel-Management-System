@@ -11,7 +11,7 @@ from django.core.mail import EmailMultiAlternatives
 
 
 
-from hotel.models import Coupon, CouponUsers, Hotel, Room, Booking, RoomServices, HotelGallery, HotelFeatures, RoomType, Notification, Bookmark, Review
+from hotel.models import Coupon, CouponUsers, Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, RoomType, Notification, Bookmark, Review
 
 from datetime import datetime
 from decimal import Decimal
@@ -365,12 +365,12 @@ def payment_success(request, booking_id):
                 return redirect("/")
                 
         else:
-            messages.error(request, "Error: Payment Manipulation Detected, This payment have been cancelled")
+            messages.error(request, "Error: Payment Issue Detected, This payment have been cancelled")
             booking.payment_status = "failed"
             booking.save()
             return redirect("/")
     else:
-        messages.error(request, "Error: Payment Manipulation Detected, This payment have been cancelled")
+        messages.error(request, "Error: Payment Issue Detected, This payment have been cancelled")
         booking = Booking.objects.get(booking_id=booking_id, success_id=success_id)
         booking.payment_status = "failed"
         booking.save()
@@ -442,7 +442,16 @@ def update_room_status(request):
                 for r in b.room.all():
                     r.is_available = True
                     r.save()
-
-            
-
+                    
     return HttpResponse(today)
+
+
+
+def rates(request):
+    return render(request, 'hotel/rates.html')
+
+def membership_rates(request):
+    return render(request, 'hotel/membership_rates.html')
+
+def faq(request):
+    return render(request, 'hotel/faq.html')

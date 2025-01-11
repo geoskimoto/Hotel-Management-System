@@ -9,9 +9,11 @@ Features that are still needing logic and solutions for:
             *NOTE!!!!!!!! 
                 **The options in the admin sidebar are controlled in /hotel/admin.py file
                   in the last several lines eg. "admin.site.register(Hotel, HotelAdmin)"
+* Need to get room type back in admin dashboard
 * Need to be able to charge members for yearly memberships and meals
 * Add a recent activity/message board to member dashboards and have the ability to create messages on the admin dashboard.
 * Ability for multiple bunks to be booked on the same invoice and multiple members to be entered into invoice for each bunk...how current system is.
 * Section on main page for Cascade Newsletter
 * Change colors
 * Add about us, etc htmls
+* Fix strip api keys and test.

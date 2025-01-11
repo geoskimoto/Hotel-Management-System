@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 
 
-from hotel.models import Hotel, Room, Booking, RoomServices, HotelGallery, HotelFeatures, RoomType
+from hotel.models import Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, RoomType
 
 from datetime import datetime
 from decimal import Decimal
@@ -25,12 +25,13 @@ def check_room_availability(request):
         print("room_type ====", room_type)
         print("checkin ====", checkin)
         print("checkout ====", checkout)
-        print("adult ====", adult)
-        print("children ====", children)
+        # print("adult ====", adult)
+        # print("children ====", children)
 
         # return redirect("hotel:room_type_detail", hotel.slug, room_type.slug)
         url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type.slug])
         url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&adult={adult}&children={children}&room_type={room_type}"
+        # url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&room_type={room_type}"
         return HttpResponseRedirect(url_with_params)
 
     else:

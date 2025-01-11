@@ -1,5 +1,5 @@
 from django.contrib import admin
-from hotel.models import Hotel, Room, Booking, RoomServices, HotelGallery, HotelFeatures, HotelFAQs, RoomType, ActivityLog, StaffOnDuty, Coupon, CouponUsers, Notification, Bookmark, Review
+from hotel.models import Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, HotelFAQs, RoomType, ActivityLog, StaffOnDuty, Coupon, CouponUsers, Notification, Bookmark, Review
 from import_export.admin import ImportExportModelAdmin
 
 class HotelGallery_Tab(admin.TabularInline):
@@ -49,7 +49,7 @@ class BookingAdmin(ImportExportModelAdmin):
     list_per_page = 100
 
 
-class RoomServicesAdmin(ImportExportModelAdmin):
+class FoodServicesAdmin(ImportExportModelAdmin):
     list_display = ['booking' ,'room', 'date', 'price', 'service_type']
     list_per_page = 100
 
@@ -73,7 +73,7 @@ class ReviewAdmin(admin.ModelAdmin):
 admin.site.register(Hotel, HotelAdmin)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(Booking, BookingAdmin)
-admin.site.register(RoomServices, RoomServicesAdmin)
+admin.site.register(FoodServices, FoodServicesAdmin)
 # admin.site.register(Coupon, CouponAdmin)
 admin.site.register(Notification, NotificationAdmin)
 # admin.site.register(Bookmark, BookmarkAdmin)

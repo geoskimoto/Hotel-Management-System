@@ -32,13 +32,13 @@
           {% for r in rooms %}
               <div class="plan featured col-md-4 col-sm-6 col-xs-12">
               <div class="utf_price_plan">
-                  <h3>Room No. {{ r.room_number }}</h3>
+                  <h3>{{ r.room_number }}</h3>
                   <span class="value">${{r.room_type.price}}<span>/Per Night</span></span> 
               </div>
               <div class="utf_price_plan_features">
                   <ul>
                   <li>Beds: {{r.room_type.number_of_beds}} </li>
-                  <li>Room Capacity: {{r.room_type.room_capacity}}</li>
+                  <li>Capacity: {{r.room_type.room_capacity}}</li>
                   </ul>
                   <input type="hidden" class="room_id_{{r.id}}" value="{{r.id}}" id="room_id">
                   <input type="hidden" class="room_number_{{r.id}}" value="{{r.room_number}}" id="room_number">
@@ -105,7 +105,7 @@
                 
                   <button type="submit" class="utf_progress_button button fullwidth_block margin-top-5">Check Availability</button>
               </form>
-              <button class="like-button add_to_wishlist"><span class="like-icon"></span> Add to Wishlist</button>
+              <!-- <button class="like-button add_to_wishlist"><span class="like-icon"></span> Add to Wishlist</button> -->
               <div class="clearfix"></div>
             </div>
         </div>      
