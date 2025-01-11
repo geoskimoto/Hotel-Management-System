@@ -11,6 +11,8 @@ from shortuuid.django_fields import ShortUUIDField
 import os 
 
 
+# **NOTE** If you create a new model, make sure to register it in admin.py so it shows up in the admin dashboard after makemigrations and migrate.
+
 IDENTITY_TYPE = (
     ("drivers_licence", "Drivers Licence"),
     ("international_passport", "International Passport")
@@ -123,7 +125,24 @@ def save_user_profile(sender, instance, **kwargs):
 post_save.connect(create_user_profile, sender=User)
 post_save.connect(save_user_profile, sender=User)
 
-
+class MemberApplication(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    date_of_birth = models.DateField()
+    occupation = models.CharField(max_length=50)
+    skills = models.CharField(max_length=400, blank=True)
+    address_line_1 = models.CharField(max_length=50)
+    address_line_2 = models.CharField(max_length=50, blank=True)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=10)
+    country = models.CharField(max_length=50, default='USA')
+    phone_number = models.CharField(max_length=30, blank=True) #make this with more appropriate constraints/formating.
+    website_url = models.URLField(max_length=100, blank=True)
+    joining_comments = CKEditor5Field(config_name='extends', null=True, blank=True)
+    
+    
 @receiver(models.signals.pre_delete, sender=Profile)
 def delete_image_file(sender, instance, **kwargs):
     if instance.image:

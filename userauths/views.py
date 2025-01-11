@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 from userauths.models import User, Profile
-from userauths.forms import UserRegisterForm
+from userauths.forms import UserRegisterForm, MemberApplicationForm
 
 # Create your views here.
 
@@ -98,3 +98,25 @@ def LogoutView(request):
     logout(request)
     messages.success(request, 'You have been logged out')
     return redirect("userauths:sign-in")
+
+
+def membership_application(request):
+    if request.method == 'POST':
+        form = MemberApplicationForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the data to the database
+            return redirect('success')  # Redirect to a success page
+    else:
+        form = MemberApplicationForm()
+
+    return render(request, 'userauths/membership_application.html', {'form': form})
+
+    # Class-based version of the same member_application function from above:
+    # class MemberApplicationView(FormView):
+    #     template_name = 'your_template_name.html'
+    #     form_class = MemberApplicationForm
+    #     success_url = reverse_lazy('success')  # Redirect after successful submission
+
+    #     def form_valid(self, form):
+    #         form.save()  # Save the form data to the database
+    #         return super().form_valid(form)

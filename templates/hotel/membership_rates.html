@@ -78,7 +78,7 @@
         </ul>
     </div>
 
-    <p>Click <a href="#">here</a> to apply online. Your information is secure and will not be shared with any third party.</p>
+    <p>Click <a href="{% url 'userauths:membership_application' %}">here</a> to apply online. Your information is secure and will not be shared with any third party.</p>
 
     <p>Once your membership is approved, you will have to present an ID (driver's license, passport or similar) in person at the lodge before your membership can be activated.</p>
 
@@ -114,9 +114,9 @@
 
     <p>The Initiation Fee is a One-Time, New Membership Fee. If your membership lapses for more than two seasons, CSC reserves the right to charge a re-initiation fee of $100.-</p>
 
-    <p>For bunk and meal rates, click <a href="#">here</a>.</p>
+    <p>For bunk and meal rates, click <a href="{% url 'hotel:rates' %}">here</a>.</p>
 
-    <p>You can also download a <a href="#">Membership Form</a>. (You need the free Adobe Acrobat reader to open the document. Get <a href="#">Adobe Reader</a>).</p>
+    <p>You can also download a <a href="{% url 'userauths:membership_application' %}">Membership Form</a>. (You need the free Adobe Acrobat reader to open the document. Get <a href="#">Adobe Reader</a>).</p>
 
     <p>Fill out the first page and return it with your check. Include your email address so we can send you your login information and notify you of late breaking events.</p>
 </div>

@@ -455,3 +455,6 @@ def membership_rates(request):
 
 def faq(request):
     return render(request, 'hotel/faq.html')
+
+def news(request):
+    return render(request, 'hotel/news.html')

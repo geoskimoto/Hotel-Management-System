@@ -1,5 +1,5 @@
 from django.contrib import admin
-from userauths.models import User, Profile
+from userauths.models import User, Profile, MemberApplication
 
 class UserAdmin(admin.ModelAdmin):
     search_fields  = ['full_name', 'username', 'email',  'phone', 'gender']
@@ -12,3 +12,4 @@ class ProfileAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(MemberApplication)

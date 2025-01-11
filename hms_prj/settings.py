@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'ckeditor_uploader',
     'django_ckeditor_5',
-    'taggit',
+    'taggit', #have to keep this on for now or site crashes
     "anymail",
     'paypal.standard.ipn',
     'geoip2',

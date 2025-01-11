@@ -7,4 +7,5 @@ urlpatterns = [
     path("sign-up/", views.RegisterView, name="sign-up"),
     path("sign-in/", views.loginViewTemp, name="sign-in"),
     path("sign-out/", views.LogoutView, name="sign-out"),
+    path('membership_application/', views.membership_application, name="membership_application")
 ]
