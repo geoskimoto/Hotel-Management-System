@@ -1,0 +1,42 @@
+
+
+
+Features that are still needing logic and solutions for:
+
+* Need to be able to charge members for yearly memberships and meals
+* Add a recent activity/message board to member dashboards and have the ability to create messages on the admin dashboard.
+* Ability for multiple bunks to be booked on the same invoice and multiple members to be entered into invoice for each bunk...how current system is.
+* Add new table with two new ckeditor fields; one for external and the other for internal news.  Then add external News
+section to index and the internal News to section on the user dashboard
+* Add about us, etc htmls
+* Fix booking functionality.
+* Fix stripe api keys and test.  Add google and apple wallets/checkouts.
+* Change "hotel" model to lodge (maybe able to do this with replace all? although dangerous af)
+* Have only an exclusive list of emails that can sign-up.  Maybe hide sign-up page and make that something you send to
+members once they are approved?
+* Membership application form
+* Change name in tab from desphaxis to CSC and add club favicon
+
+
+
+Things you need a better understanding of:
+
+* views - logic behind making the bookings
+* urls - how to use class based url mapping like this app is using as well as SLUGS
+* SLUGS
+* css, bootstrap familiarity
+* what the admin.py file is doing
+* stripe and paypal payments
+
+
+
+
+Completed Tasks:
+
+* Need to delete other hotels (after fig out how to show hotels again in admin dashboard), make homepage just about CSC,
+    move booking page into dashboard after logging in
+            *NOTE!!!!!!!!
+                **The options in the admin sidebar are controlled in /hotel/admin.py file
+                  in the last several lines eg. "admin.site.register(Hotel, HotelAdmin)"
+* Need to get room type back in admin dashboard
+* Change colors
