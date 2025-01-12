@@ -1,5 +1,5 @@
 from django.contrib import admin
-from userauths.models import User, Profile, MemberApplication, ApprovedEmail
+from userauths.models import User, Profile, MemberApplication, ApprovedEmail, MembershipChoices
 
 class UserAdmin(admin.ModelAdmin):
     search_fields  = ['full_name', 'username', 'email',  'phone', 'gender']
@@ -15,5 +15,6 @@ class ApprovedEmailAdmin(admin.ModelAdmin):
     
 admin.site.register(User, UserAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(MembershipChoices)
 admin.site.register(MemberApplication)
 admin.site.register(ApprovedEmail, ApprovedEmailAdmin)
