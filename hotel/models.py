@@ -14,6 +14,9 @@ import shortuuid
 from taggit.managers import TaggableManager
 
 
+# **NOTE** If you create a new model, make sure to register it in admin.py so it shows up in the admin dashboard after makemigrations and migrate.
+
+
 ICON_TPYE = (
     ('Bootstap Icons', 'Bootstap Icons'),
     ('Fontawesome Icons', 'Fontawesome Icons'),
@@ -176,8 +179,8 @@ class RoomType(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     type = models.CharField(max_length=10)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    number_of_beds = models.PositiveIntegerField(default=0)
-    room_capacity = models.PositiveIntegerField(default=0)
+    number_of_beds = models.PositiveIntegerField(default=1)
+    room_capacity = models.PositiveIntegerField(default=1)
     rtid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
     slug = models.SlugField(null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -202,7 +205,7 @@ class Room(models.Model):
     room_type = models.ForeignKey(RoomType, on_delete=models.CASCADE)
     room_number = models.CharField(max_length=10)
     is_available = models.BooleanField(default=True)
-    rid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    rid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -244,7 +247,7 @@ class Booking(models.Model):
     coupons = models.ManyToManyField("hotel.Coupon", blank=True)
     stripe_payment_intent = models.CharField(max_length=200,null=True, blank=True)
     success_id = ShortUUIDField(length=300, max_length=505, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
-    booking_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    booking_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
 
 
     def __str__(self):
@@ -282,7 +285,7 @@ class Coupon(models.Model):
     make_public = models.BooleanField(default=False)
     valid_from = models.DateField()
     valid_to = models.DateField()
-    cid = ShortUUIDField(length=10, max_length=25, alphabet="abcdefghijklmnopqrstuvxyz")
+    cid = ShortUUIDField(length=10, max_length=25, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
 
     
     def __str__(self):
@@ -317,12 +320,24 @@ class FoodServices(models.Model):
     def str(self):
         return str(self.booking) + " " + str(self.room) + " " + str(self.service_type)
 
+
+class News(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="news")
+    date= models.DateField(auto_now_add=True)
+    internal_news_headline = CKEditor5Field(config_name='extends', null=True, blank=True)
+    internal_news_description = CKEditor5Field(config_name='extends', null=True, blank=True)
+    external_news_headline = CKEditor5Field(config_name='extends', null=True, blank=True)    
+    external_news_description = CKEditor5Field(config_name='extends', null=True, blank=True)
+    is_news = models.BooleanField(default=True)
+    is_event = models.BooleanField(default=False)
+    
+    
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="user")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="notifications")
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, null=True, blank=True)
     type = models.CharField(max_length=100, default="new_order", choices=NOTIFICATION_TYPE)
     seen = models.BooleanField(default=False)
-    nid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    nid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
     date= models.DateField(auto_now_add=True)
     
     def __str__(self):
@@ -335,7 +350,7 @@ class Notification(models.Model):
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, null=True, blank=True)
-    bid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz")
+    bid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
     date= models.DateField(auto_now_add=True)
     
     def __str__(self):

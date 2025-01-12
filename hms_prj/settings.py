@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'ckeditor_uploader',
     'django_ckeditor_5',
-    'taggit',
+    'taggit', #have to keep this on for now or site crashes
     "anymail",
     'paypal.standard.ipn',
     'geoip2',
@@ -208,7 +208,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
     'site_header': "CSC Booking System",
-    'site_brand': "Community through winter fun",
+    'site_brand': "Administator",
     'site_logo': "/images/logo3.jpg",
     'copyright':  "All Right Reserved 2023",
     "welcome_sign": "Welcome to CSC",
