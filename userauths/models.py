@@ -112,37 +112,8 @@ class Profile(models.Model):
     def thumbnail(self):
         return mark_safe('<img src="/media/%s" width="50" height="50" object-fit:"cover" />' % (self.image))
 
-
-class MembershipChoices(models.Model):
-    MEMBERSHIP_CHOICES = [
-        ('primary', 'Primary Member'),
-        ('spouse', 'Spouse'),
-        ('child', 'Child'),
-        ('guest', 'Guest')
-    ]
-
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='family_members')
-    name = models.CharField(max_length=255)
-    membership_choices = models.CharField(max_length=10, choices=MEMBERSHIP_CHOICES)
-    # other relevant fields
-
-# Your MembershipChoices model looks good as it is, but you need to ensure that when creating a booking,
-# you're assigning the correct MembershipChoices instance. Here's how you can do that:
-#
-# python
-# Copy code
-# # Get a specific membership choice for the user
-# membership_choice = MembershipChoices.objects.get(membership_choices='primary')
-#
-# # Create the booking with the correct membership choice
-# booking = Booking.objects.create(
-#     user=user,
-#     member_choices=membership_choice,
-#     # Add other fields like check_in_date, hotel, etc.
-# )
-# This way, member_choices in your Booking model will reference the MembershipChoices instance, and Django will use
-# the ID (integer) to store the foreign key, avoiding the ValueError: Field 'id' expected a number but got 'primary'.
-
+    
+    
 def create_user_profile(sender, instance, created, **kwargs):
 	if created:
 		Profile.objects.create(user=instance)

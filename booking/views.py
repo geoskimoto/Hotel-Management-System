@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.template.loader import render_to_string
-from django.core.exceptions import ObjectDoesNotExist
 
 
 from hotel.models import Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, RoomType
@@ -15,13 +14,13 @@ def check_room_availability(request):
         id = request.POST.get("hotel-id")
         checkin = request.POST.get("checkin")
         checkout = request.POST.get("checkout")
-        # adult = request.POST.get("adult")
-        # children = request.POST.get("children")
+        adult = request.POST.get("adult")
+        children = request.POST.get("children")
         room_type = request.POST.get("room-type")
 
         hotel = Hotel.objects.get(status="Live", id=id)
         room_type = RoomType.objects.get(hotel=hotel, slug=room_type)
-
+        
         print("id ====", id)
         print("room_type ====", room_type)
         print("checkin ====", checkin)
@@ -31,24 +30,13 @@ def check_room_availability(request):
 
         # return redirect("hotel:room_type_detail", hotel.slug, room_type.slug)
         url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type.slug])
-        # url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&adult={adult}&children={children}&room_type={room_type}"
-        url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&room_type={room_type}"
+        url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&adult={adult}&children={children}&room_type={room_type}"
+        # url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&room_type={room_type}"
         return HttpResponseRedirect(url_with_params)
 
     else:
         return redirect("hotel:index")
 
-# def check_room_availability(request):
-#     if request.method == 'POST':
-#         form = AvailabilityForm(request.POST)
-#         if form.is_valid():
-#             # Process the valid form data here
-#             # You can get the cleaned data using form.cleaned_data
-#             return render(request, 'booking/availability_result.html', {'form': form})
-#     else:
-#         form = AvailabilityForm()
-#
-#     return render(request, 'booking/room_availability.html', {'form': form})
 
 def booking_data(request, slug):
     hotel = Hotel.objects.get(status="Live", slug=slug)
@@ -58,66 +46,49 @@ def booking_data(request, slug):
     return render(request, "booking/booking_data.html", context)
 
 
-
-
 def add_to_selection(request):
-    # Extract GET parameters
     room_selection = {}
-    hotel_id = request.GET.get('hotel_id')
-    hotel_name = request.GET.get('hotel_name')
-    room_name = request.GET.get('room_name')
-    room_price = request.GET.get('room_price')
-    number_of_beds = request.GET.get('number_of_beds')
-    room_number = request.GET.get('room_number')
-    room_type = request.GET.get('room_type')
-    room_id = request.GET.get('room_id')
-    checkin = request.GET.get('checkin')
-    checkout = request.GET.get('checkout')
-    # adult = request.GET.get('adult')
-    # children = request.GET.get('children')
-
-    # Validate required fields
-    if not all([hotel_id, hotel_name, room_name, room_price, number_of_beds, room_number, room_type, room_id, checkin,
-                checkout]):
-        return JsonResponse({"error": "Missing required parameters"}, status=400)
 
     room_selection[str(request.GET['id'])] = {
-        'hotel_id': hotel_id,
-        'hotel_name': hotel_name,
-        'room_name': room_name,
-        'room_price': room_price,
-        'number_of_beds': number_of_beds,
-        'room_number': room_number,
-        'room_type': room_type,
-        'room_id': room_id,
-        'checkin': checkin,
-        'checkout': checkout,
-        'adult': int(adult),  # Ensure 'adult' is an integer
-        'children': int(children),  # Ensure 'children' is an integer
+        'hotel_id': request.GET['hotel_id'],
+        'hotel_name': request.GET['hotel_name'],
+        'room_name': request.GET['room_name'],
+        'room_price': request.GET['room_price'],
+        'number_of_beds': request.GET['number_of_beds'],
+        'room_number': request.GET['room_number'],
+        'room_type': request.GET['room_type'],
+        'room_id': request.GET['room_id'],
+        'checkin': request.GET['checkin'],
+        'checkout': request.GET['checkout'],
+        'adult': request.GET['adult'],
+        'children': request.GET['children'],
     }
 
-    # Update the session if 'selection_data_obj' already exists in the session
+    # could just have a single line of code saving the data to the session like this:
+    # request.session['selection_data_obj'] = room_selection
+    # However, what happens if user updates the info?  It will save multiple sessions. So...
+    # update the request instead:
     if 'selection_data_obj' in request.session:
-        selection_data = request.session['selection_data_obj']
-
-        if str(request.GET['id']) in selection_data:
-            # Update existing selection data
-            # selection_data[str(request.GET['id'])]['adult'] = int(adult)
-            # selection_data[str(request.GET['id'])]['children'] = int(children)
+        #If session data has already been saved, update each parameter (only has num of adults and children, but
+        # should probably also add room_number, checkin, and checkout at least.  He says he'll show later how to update
+        # these other parameters later meaning it maybe more diff than just adding like adult and child below?):
+        if str(request.GET['id']) in request.session['selection_data_obj']:
+            #First retrieve session_data_obj and then overwrite new values:
+            selection_data = request.session['selection_data_obj']
+            selection_data[str(request.GET['id'])]['adult'] = int(room_selection[str(request.GET['id'])]['adult'])
+            selection_data[str(request.GET['id'])]['children'] = int(room_selection[str(request.GET['id'])]['children'])
             request.session['selection_data_obj'] = selection_data
         else:
-            # Add new selection data
+            selection_data = request.session['selection_data_obj']
             selection_data.update(room_selection)
             request.session['selection_data_obj'] = selection_data
     else:
-        # Save the room selection if it's the first time adding to the session
+        #If session data hasn't been save yet, save it.
         request.session['selection_data_obj'] = room_selection
-
-    # Prepare the response data
     data = {
-        "data": request.session['selection_data_obj'],
+        "data":request.session['selection_data_obj'], 
         'total_selected_items': len(request.session['selection_data_obj'])
-    }
+        }
     return JsonResponse(data)
 
 
@@ -127,9 +98,7 @@ def delete_session(request):
 
 
 def delete_selection(request):
-    hotel_id = request.GET.get('id', None)
-    if hotel_id is None:
-        return JsonResponse({"error": "ID is missing from the request."}, status=400)
+    hotel_id = str(request.GET['id'])
     if 'selection_data_obj' in request.session:
         if hotel_id in request.session['selection_data_obj']:
             selection_data = request.session['selection_data_obj']
@@ -140,10 +109,11 @@ def delete_selection(request):
     total = 0
     total_days = 0
     room_count = 0
-    # adult = 0
-    # children = 0
+    adult = 0 
+    children = 0 
     checkin = "" 
     checkout = "" 
+    children = 0 
     hotel = None
 
     if 'selection_data_obj' in request.session:
@@ -153,8 +123,8 @@ def delete_selection(request):
 
             checkin = item["checkin"]
             checkout = item["checkout"]
-            # adult += int(item["adult"])
-            # children += int(item["children"])
+            adult += int(item["adult"])
+            children += int(item["children"])
             room_type_ = item["room_type"]
             
             hotel = Hotel.objects.get(id=id)
@@ -181,8 +151,8 @@ def delete_selection(request):
             "total_selected_items": len(request.session['selection_data_obj']),
             "total":total,
             "total_days":total_days,
-            # "adult":adult,
-            # "children":children,
+            "adult":adult,
+            "children":children,
             "checkin":checkin,
             "checkout":checkout,
             "hotel":hotel

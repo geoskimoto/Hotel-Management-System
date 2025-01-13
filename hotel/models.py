@@ -8,7 +8,7 @@ from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from userauths.models import User, MembershipChoices
+from userauths.models import User
 
 import shortuuid
 from taggit.managers import TaggableManager
@@ -221,8 +221,6 @@ class Room(models.Model):
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    # Foreign key reference actual instance of Membership Choices model
-    member_choices = models.ForeignKey(MembershipChoices, on_delete=models.CASCADE, null=True, blank=True)
     payment_status = models.CharField(max_length=100, choices=PAYMENT_STATUS, default="initiated")
 
     full_name = models.CharField(max_length=1000, null=True, blank=True)
@@ -238,8 +236,8 @@ class Booking(models.Model):
     check_in_date = models.DateField()
     check_out_date = models.DateField()
     total_days = models.PositiveIntegerField(default=0)
-    # num_adults = models.PositiveIntegerField(default=1)
-    # num_children = models.PositiveIntegerField(default=0)
+    num_adults = models.PositiveIntegerField(default=1)
+    num_children = models.PositiveIntegerField(default=0)
     checked_in = models.BooleanField(default=False)
     checked_out = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -323,23 +321,16 @@ class FoodServices(models.Model):
         return str(self.booking) + " " + str(self.room) + " " + str(self.service_type)
 
 
-class PublicNews(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="PublicNews")
-    date = models.DateField(auto_now_add=True)
-    title = CKEditor5Field(config_name='extends', null=True, blank=True)
-    description = CKEditor5Field(config_name='extends', null=True, blank=True)
-    document = models.FileField(upload_to='documents/')
-    is_news = models.BooleanField(default=True)
-    is_event = models.BooleanField(default=False)
-
-class MemberNews(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="MemberNews")
+class News(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="news")
     date= models.DateField(auto_now_add=True)
-    title = CKEditor5Field(config_name='extends', null=True, blank=True)
-    description = CKEditor5Field(config_name='extends', null=True, blank=True)
-    document = models.FileField(upload_to='documents/')
+    internal_news_headline = CKEditor5Field(config_name='extends', null=True, blank=True)
+    internal_news_description = CKEditor5Field(config_name='extends', null=True, blank=True)
+    external_news_headline = CKEditor5Field(config_name='extends', null=True, blank=True)    
+    external_news_description = CKEditor5Field(config_name='extends', null=True, blank=True)
     is_news = models.BooleanField(default=True)
     is_event = models.BooleanField(default=False)
+    
     
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="notifications")

@@ -1,8 +1,5 @@
 from django.contrib import admin
-from hotel.models import (Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, HotelFAQs, RoomType,
-                          ActivityLog, StaffOnDuty, Coupon, CouponUsers, Notification, Bookmark, Review, PublicNews,
-                          MemberNews)
-
+from hotel.models import Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, HotelFAQs, RoomType, ActivityLog, StaffOnDuty, Coupon, CouponUsers, Notification, Bookmark, Review, News
 from import_export.admin import ImportExportModelAdmin
 
 class HotelGallery_Tab(admin.TabularInline):
@@ -47,7 +44,7 @@ class RoomAdmin(ImportExportModelAdmin):
 class BookingAdmin(ImportExportModelAdmin):
     inlines = [ActivityLog_Tab, StaffOnDuty_Tab]
     list_filter = [ 'hotel', 'room_type', 'check_in_date', 'check_out_date', 'is_active' , 'checked_in' ,'checked_out']
-    list_display = ['booking_id', 'user', 'hotel', 'room_type', 'rooms', 'total', 'total_days', 'check_in_date', 'check_out_date', 'is_active' , 'checked_in' ,'checked_out']
+    list_display = ['booking_id', 'user', 'hotel', 'room_type', 'rooms', 'total', 'total_days', 'num_adults', 'num_children', 'check_in_date', 'check_out_date', 'is_active' , 'checked_in' ,'checked_out']
     search_fields = ['booking_id', 'user__username', 'user__email']
     list_per_page = 100
 
@@ -79,8 +76,8 @@ admin.site.register(Booking, BookingAdmin)
 admin.site.register(FoodServices, FoodServicesAdmin)
 # admin.site.register(Coupon, CouponAdmin)
 admin.site.register(Notification, NotificationAdmin)
-admin.site.register(PublicNews)
-admin.site.register(MemberNews)
+admin.site.register(News)
+
 # admin.site.register(Bookmark, BookmarkAdmin)
 # admin.site.register(Review, ReviewAdmin)
 
