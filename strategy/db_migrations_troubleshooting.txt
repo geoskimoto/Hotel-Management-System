@@ -1,0 +1,83 @@
+1. makemigrations
+Purpose: Creates new migration files based on the changes in your models.
+python manage.py makemigrations
+You can specify an app name to create migrations for a specific app:
+python manage.py makemigrations <app_name>
+
+2. migrate
+Purpose: Applies migrations to the database.
+python manage.py migrate
+You can also specify a specific migration to apply:
+python manage.py migrate <app_name> <migration_name>
+
+3. showmigrations
+Purpose: Lists all available migrations and their current status (applied or not).
+python manage.py showmigrations
+
+4. sqlmigrate
+Purpose: Shows the SQL statements for a specific migration without applying it.
+python manage.py sqlmigrate <app_name> <migration_name>
+
+5. migrate --plan
+Purpose: Displays a plan of the migrations that will be applied.
+python manage.py migrate --plan
+
+6. makemigrations --dry-run
+Purpose: Shows what migrations would be created without actually creating them.
+python manage.py makemigrations --dry-run
+
+7. migrate --fake
+Purpose: Marks migrations as applied without actually running them (useful for syncing the migration state).
+python manage.py migrate --fake <app_name> <migration_name>
+
+8. migrate --fake-initial
+Purpose: Fakes the initial migrations for apps that already have tables in the database.
+python manage.py migrate --fake-initial
+
+9. migrate <app_name> zero
+Purpose: Rolls back all migrations for a specific app, effectively resetting the app's database schema.
+python manage.py migrate <app_name> zero
+These commands help you manage the state of your database schema effectively as your Django project evolves. Would you like to dive deeper into any specific command or scenario?
+
+
+
+
+
+How would I start completely over with my database?  Destroying the entire db, schema, and all migrations folders so I 
+can recreate from scratch?
+
+ChatGPT said:
+ChatGPT
+To completely reset your Django database, schema, and migrations, follow these steps:
+
+1. Delete the Database
+If you're using SQLite (the default database in Django), delete the .sqlite3 file in your project directory. For example:
+rm db.sqlite3
+For other databases like PostgreSQL or MySQL, you would need to drop the database using their respective commands or a database management tool like psql or MySQL Workbench.
+
+2. Delete Migrations
+Remove the migrations folder inside each app's directory (except for __init__.py if it exists). You can do this manually or with a command like:
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+
+3. Create New Migrations
+Generate new initial migrations for your apps:
+python manage.py makemigrations
+
+4. Apply Migrations
+Apply the migrations to create a fresh database schema:
+python manage.py migrate
+
+5. Optional: Create a Superuser
+If your app needs a superuser for admin access, recreate it:
+python manage.py createsuperuser
+By following these steps, you'll have reset your Django project to a clean state. Would you like guidance on any specific step?
+
+
+
+********The above worked!  Also had to comment out validation email stuff, but makemigrations worked after this and reset
+        everything.  Remember, you can see the names of the migration files in the sqlite viewer extension in vscode.  If 
+        worked properly, you'll have a set of new files and all the ones will gone (obviously since you deleted the db).
+        Also, make sure to delete all of the files in all of pycache and migration folders.  There's a pycache folder in the 
+        main app folder as well as the migrations folder.  Think you only need to delete the pycache in the migrations folder,
+        but I deleted all files in both which made it worked. ****

@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from django.core.validators import MinValueValidator, MaxValueValidator
+from .validators import validate_attachment_file_size
 
 from userauths.models import User
 
@@ -321,16 +322,23 @@ class FoodServices(models.Model):
         return str(self.booking) + " " + str(self.room) + " " + str(self.service_type)
 
 
-class News(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="news")
+class MemberNews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="member_news")
     date= models.DateField(auto_now_add=True)
-    internal_news_headline = CKEditor5Field(config_name='extends', null=True, blank=True)
-    internal_news_description = CKEditor5Field(config_name='extends', null=True, blank=True)
-    external_news_headline = CKEditor5Field(config_name='extends', null=True, blank=True)    
-    external_news_description = CKEditor5Field(config_name='extends', null=True, blank=True)
+    subject = CKEditor5Field(config_name='extends', null=True, blank=True)
+    description = CKEditor5Field(config_name='extends', null=True, blank=True)
     is_news = models.BooleanField(default=True)
     is_event = models.BooleanField(default=False)
-    
+    attachment = models.FileField(upload_to='attachments/', null=True, blank=True, validators=[validate_attachment_file_size])
+
+class PublicNews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="public_news")
+    date= models.DateField(auto_now_add=True)
+    subject = CKEditor5Field(config_name='extends', null=True, blank=True)
+    description = CKEditor5Field(config_name='extends', null=True, blank=True)
+    is_news = models.BooleanField(default=True)
+    is_event = models.BooleanField(default=False) 
+    attachment = models.FileField(upload_to='attachments/', null=True, blank=True, validators=[validate_attachment_file_size])    
     
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="notifications")

@@ -3,20 +3,30 @@
 
 Features that are still needing logic and solutions for:
 
-* Need to be able to charge members for yearly memberships and meals
-* Add a recent activity/message board to member dashboards and have the ability to create messages on the admin dashboard.
-* Ability for multiple bunks to be booked on the same invoice and multiple members to be entered into invoice for each bunk...how current system is.
-* Add new table with two new ckeditor fields; one for external and the other for internal news.  Then add external News
-section to index and the internal News to section on the user dashboard
-* Add about us, etc htmls
-* Fix booking functionality.
-* Fix stripe api keys and test.  Add google and apple wallets/checkouts.
-* Change "hotel" model to lodge (maybe able to do this with replace all? although dangerous af)
-* Have only an exclusive list of emails that can sign-up.  Maybe hide sign-up page and make that something you send to
-members once they are approved?
-* Membership application form
-* Change name in tab from desphaxis to CSC and add club favicon
+* Fixes and major updates to booking:
+  - Need to have different rates for different members (primary, child, guest).
+    * Don't think you need to actually link members together in the Profiles model.  Just need to have a field called 
+      "children" and "guests" and have them editable by the User.  Then in the Booking model have ability to add
+       children/guests to the booking, which means in the RoomType model you'll need to have different rates for 
+       different groups.
+  - Ability to set all bunks the same price instead of having to go through all ~90 of them. 
+  - Move all booking functionality to a separate python module and import into views.
+  - Fix stripe api keys and test.  Add google and apple wallets/checkouts.
 
+* Create models, logic, html pages to make one time purchases for yearly memberships, meals, and events.  Use the club's current
+  squarespace site as a guide/template.
+* Add PublicNews and MemberNews divs/message boards to index.html and user.
+* sqlite has a lock where only a single user/session can write at a time.  Might have to switch over to mysql.
+* Add about us, etc htmls
+* Change "hotel" model to lodge (maybe able to do this with replace all? although dangerous af)
+
+
+
+* Handle 404 errors so it goes to defined 404 page instead of debug page.  Something like this:
+  from django.shortcuts import get_object_or_404
+  def hotel_detail(request, slug):
+      hotel = get_object_or_404(Hotel, status="Live", slug=slug)
+      # Your existing code for handling the hotel details
 
 
 Things you need a better understanding of:
@@ -40,3 +50,8 @@ Completed Tasks:
                   in the last several lines eg. "admin.site.register(Hotel, HotelAdmin)"
 * Need to get room type back in admin dashboard
 * Change colors
+* Membership application form
+* Change name in tab from desphaxis to CSC and add club favicon
+* Have only an exclusive list of emails that can sign-up.  Maybe hide sign-up page and make that something you send to
+members once they are approved?
+* Add new table with two new ckeditor fields; one for external and the other for internal news.
