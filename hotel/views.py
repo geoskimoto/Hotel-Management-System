@@ -11,7 +11,7 @@ from django.core.mail import EmailMultiAlternatives
 
 
 
-from hotel.models import Coupon, CouponUsers, Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, RoomType, Notification, Bookmark, Review
+from hotel.models import Coupon, CouponUsers, Hotel, Room, Booking, PublicNews, MemberNews, FoodServices, HotelGallery, HotelFeatures, RoomType, Notification, Bookmark, Review
 
 from datetime import datetime
 from decimal import Decimal
@@ -21,8 +21,10 @@ import json
 
 def index(request):
     hotel = Hotel.objects.filter(status="Live")
+    publicnews = PublicNews.objects.filter(is_news=True).order_by('-date')[:5]
     context = {
-        "hotel":hotel
+        "hotel":hotel,
+        "PublicNews":publicnews
     }
     return render(request, "hotel/index.html", context)
 

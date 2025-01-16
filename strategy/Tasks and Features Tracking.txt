@@ -5,6 +5,8 @@ Features that are still needing logic and solutions for:
 
 * Fixes and major updates to booking:
   - Need to have different rates for different members (primary, child, guest).
+    * Start writing the logic and then change models once you have a good sense in how to handle all of the different
+      conditions.
     * Don't think you need to actually link members together in the Profiles model.  Just need to have a field called 
       "children" and "guests" and have them editable by the User.  Then in the Booking model have ability to add
        children/guests to the booking, which means in the RoomType model you'll need to have different rates for 
@@ -19,9 +21,6 @@ Features that are still needing logic and solutions for:
 * sqlite has a lock where only a single user/session can write at a time.  Might have to switch over to mysql.
 * Add about us, etc htmls
 * Change "hotel" model to lodge (maybe able to do this with replace all? although dangerous af)
-
-
-
 * Handle 404 errors so it goes to defined 404 page instead of debug page.  Something like this:
   from django.shortcuts import get_object_or_404
   def hotel_detail(request, slug):
@@ -29,12 +28,15 @@ Features that are still needing logic and solutions for:
       # Your existing code for handling the hotel details
 
 
+
+
 Things you need a better understanding of:
 
 * views - logic behind making the bookings
 * urls - how to use class based url mapping like this app is using as well as SLUGS
 * SLUGS
-* css, bootstrap familiarity
+* reverse django keyword
+* css, bootstrap familiarity and conventions
 * what the admin.py file is doing
 * stripe and paypal payments
 
