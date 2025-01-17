@@ -27,11 +27,11 @@ def book_room(request):
     else:
         form = BookingForm()
 
-    return render(request, 'booking/book_room.html', {'form': form})
+    return render(request, 'booking2/book_room.html', {'form': form})
 
 def booking_confirmation(request, booking_id):
     try:
         booking = Booking2.objects.get(id=booking_id)
-        return render(request, 'booking/booking_confirmation.html', {'booking': booking})
+        return render(request, 'booking2/booking_confirmation.html', {'booking': booking})
     except Booking2.DoesNotExist:
         return HttpResponse("Booking not found", status=404)

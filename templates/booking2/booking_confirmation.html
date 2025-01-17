@@ -1,0 +1,19 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <h1>Booking Confirmation</h1>
+    <p>Thank you, {{ booking.user }}! Your booking is confirmed.</p>
+    <p>Details of your booking:</p>
+    <ul>
+        <li><strong>Room:</strong> {{ booking.room.name }}</li>
+        <li><strong>Check-in Date:</strong> {{ booking.check_in }}</li>
+        <li><strong>Check-out Date:</strong> {{ booking.check_out }}</li>
+        <li><strong>Occupants:</strong> {{ booking.occupants }}</li>
+    </ul>
+    <p><a href="{% url 'home' %}">Return to Home</a></p>
+</div>
+
+
+{% endblock content %}
