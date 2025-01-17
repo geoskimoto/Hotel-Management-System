@@ -24,6 +24,7 @@ urlpatterns = [
     # Apps Routes
     path("", include("hotel.urls")),
     path("booking/", include("booking.urls")),
+    path("booking2/", include("booking2.urls")),    
     path("user/", include("userauths.urls")),
     path("dashboard/", include("user_dashboard.urls")),
 

@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-
+from datetime import date
 from environs import Env
+
+
+
 env = Env()  
 env.read_env()  
 
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
     # Custom Apps
     'hotel',
     'booking',
+    'booking2',
     'addon',
     'userauths',
     'user_dashboard',
@@ -203,7 +207,12 @@ ANYMAIL = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
+# Global settings for booking validation
+DEFAULT_MAX_OCCUPANTS = 4  # Default max capacity per room
+DEFAULT_BOOKING_WINDOW = 365  # Number of days allowed to book in advance
+MIN_BOOKING_DATE = date.today()  # Minimum booking date (should not allow past bookings)
+MIN_STAY_DAYS = 1  # Minimum number of days for stay
+MAX_STAY_DAYS = 14  # Maximum number of days for stay
 
 
 JAZZMIN_SETTINGS = {

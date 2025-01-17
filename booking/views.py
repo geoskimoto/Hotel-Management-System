@@ -7,6 +7,104 @@ from hotel.models import Hotel, RoomType
 from .booking_logic import check_room_availability_data, calculate_room_selection_price
 
 
+
+def check_room_availability(request):
+    if request.method == "POST":
+        id = request.POST.get("hotel-id")
+        checkin = request.POST.get("checkin")
+        checkout = request.POST.get("checkout")
+        adult = request.POST.get("adult")
+        children = request.POST.get("children")
+        room_type = request.POST.get("room-type")
+
+        hotel, room_type = check_room_availability_data(id, checkin, checkout, room_type)
+
+        url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type.slug])
+        url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&adult={adult}&children={children}&room_type={room_type}"
+        return HttpResponseRedirect(url_with_params)
+    else:
+        return redirect("hotel:index")
+
+
+def booking_data(request, slug):
+    hotel = Hotel.objects.get(status="Live", slug=slug)
+    context = {
+        "hotel": hotel,
+    }
+    return render(request, "booking/booking_data.html", context)
+
+
+def add_to_selection(request):
+    room_selection = {
+        str(request.GET['id']): {
+            'hotel_id': request.GET['hotel_id'],
+            'hotel_name': request.GET['hotel_name'],
+            'room_name': request.GET['room_name'],
+            'room_price': request.GET['room_price'],
+            'number_of_beds': request.GET['number_of_beds'],
+            'room_number': request.GET['room_number'],
+            'room_type': request.GET['room_type'],
+            'room_id': request.GET['room_id'],
+            'checkin': request.GET['checkin'],
+            'checkout': request.GET['checkout'],
+            'adult': request.GET['adult'],
+            'children': request.GET['children'],
+        }
+    }
+
+    if 'selection_data_obj' in request.session:
+        selection_data = request.session['selection_data_obj']
+        if str(request.GET['id']) in selection_data:
+            selection_data[str(request.GET['id'])]['adult'] = int(room_selection[str(request.GET['id'])]['adult'])
+            selection_data[str(request.GET['id'])]['children'] = int(room_selection[str(request.GET['id'])]['children'])
+        else:
+            selection_data.update(room_selection)
+        request.session['selection_data_obj'] = selection_data
+    else:
+        request.session['selection_data_obj'] = room_selection
+
+    data = {
+        "data": request.session['selection_data_obj'],
+        'total_selected_items': len(request.session['selection_data_obj']),
+    }
+    return JsonResponse(data)
+
+
+def delete_session(request):
+    request.session.pop('selection_data_obj', None)
+    return redirect(request.META.get("HTTP_REFERER"))
+
+
+def delete_selection(request):
+    hotel_id = str(request.GET['id'])
+    if 'selection_data_obj' in request.session:
+        if hotel_id in request.session['selection_data_obj']:
+            del request.session['selection_data_obj'][hotel_id]
+
+    total, total_days, adult, children, hotel = calculate_room_selection_price(request.session.get('selection_data_obj', {}))
+
+    context = render_to_string(
+        "hotel/async/selected_rooms.html",
+        {
+            "data": request.session['selection_data_obj'],
+            "total_selected_items": len(request.session['selection_data_obj']),
+            "total": total,
+            "total_days": total_days,
+            "adult": adult,
+            "children": children,
+            "checkin": checkin,
+            "checkout": checkout,
+            "hotel": hotel,
+        }
+    )
+
+    return JsonResponse({"data": context, 'total_selected_items': len(request.session['selection_data_obj'])})
+
+
+
+
+
+
 # from hotel.models import Hotel, Room, Booking, FoodServices, HotelGallery, HotelFeatures, RoomType
 
 # from datetime import datetime
@@ -171,98 +269,5 @@ from .booking_logic import check_room_availability_data, calculate_room_selectio
 
 
 
-
-
-def check_room_availability(request):
-    if request.method == "POST":
-        id = request.POST.get("hotel-id")
-        checkin = request.POST.get("checkin")
-        checkout = request.POST.get("checkout")
-        adult = request.POST.get("adult")
-        children = request.POST.get("children")
-        room_type = request.POST.get("room-type")
-
-        hotel, room_type = check_room_availability_data(id, checkin, checkout, room_type)
-
-        url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type.slug])
-        url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&adult={adult}&children={children}&room_type={room_type}"
-        return HttpResponseRedirect(url_with_params)
-    else:
-        return redirect("hotel:index")
-
-
-def booking_data(request, slug):
-    hotel = Hotel.objects.get(status="Live", slug=slug)
-    context = {
-        "hotel": hotel,
-    }
-    return render(request, "booking/booking_data.html", context)
-
-
-def add_to_selection(request):
-    room_selection = {
-        str(request.GET['id']): {
-            'hotel_id': request.GET['hotel_id'],
-            'hotel_name': request.GET['hotel_name'],
-            'room_name': request.GET['room_name'],
-            'room_price': request.GET['room_price'],
-            'number_of_beds': request.GET['number_of_beds'],
-            'room_number': request.GET['room_number'],
-            'room_type': request.GET['room_type'],
-            'room_id': request.GET['room_id'],
-            'checkin': request.GET['checkin'],
-            'checkout': request.GET['checkout'],
-            'adult': request.GET['adult'],
-            'children': request.GET['children'],
-        }
-    }
-
-    if 'selection_data_obj' in request.session:
-        selection_data = request.session['selection_data_obj']
-        if str(request.GET['id']) in selection_data:
-            selection_data[str(request.GET['id'])]['adult'] = int(room_selection[str(request.GET['id'])]['adult'])
-            selection_data[str(request.GET['id'])]['children'] = int(room_selection[str(request.GET['id'])]['children'])
-        else:
-            selection_data.update(room_selection)
-        request.session['selection_data_obj'] = selection_data
-    else:
-        request.session['selection_data_obj'] = room_selection
-
-    data = {
-        "data": request.session['selection_data_obj'],
-        'total_selected_items': len(request.session['selection_data_obj']),
-    }
-    return JsonResponse(data)
-
-
-def delete_session(request):
-    request.session.pop('selection_data_obj', None)
-    return redirect(request.META.get("HTTP_REFERER"))
-
-
-def delete_selection(request):
-    hotel_id = str(request.GET['id'])
-    if 'selection_data_obj' in request.session:
-        if hotel_id in request.session['selection_data_obj']:
-            del request.session['selection_data_obj'][hotel_id]
-
-    total, total_days, adult, children, hotel = calculate_room_selection_price(request.session.get('selection_data_obj', {}))
-
-    context = render_to_string(
-        "hotel/async/selected_rooms.html",
-        {
-            "data": request.session['selection_data_obj'],
-            "total_selected_items": len(request.session['selection_data_obj']),
-            "total": total,
-            "total_days": total_days,
-            "adult": adult,
-            "children": children,
-            "checkin": checkin,
-            "checkout": checkout,
-            "hotel": hotel,
-        }
-    )
-
-    return JsonResponse({"data": context, 'total_selected_items': len(request.session['selection_data_obj'])})
 
 
