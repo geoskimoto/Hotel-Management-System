@@ -44,7 +44,7 @@ class Booking2(models.Model):
         Custom validations for booking: ensure room is available, dates are valid, occupancy is within limits.
         """
         # Booking must not overlap
-        if Booking.objects.filter(room=self.room, check_in__lt=self.check_out, check_out__gt=self.check_in).exists():
+        if Booking2.objects.filter(room=self.room, check_in__lt=self.check_out, check_out__gt=self.check_in).exists():
             raise ValidationError(f"The room {self.room.name} is already booked for these dates.")
 
         # Check against blocked dates for the room

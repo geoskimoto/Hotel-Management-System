@@ -19,10 +19,10 @@ def book_room(request):
                 # Try to make the booking using the model's static method
                 booking = Booking2.book_room(room.id, check_in, check_out, user, occupants)
                 messages.success(request, f"Room {room.name} booked successfully!")
-                return redirect('booking_confirmation', booking_id=booking.id)
+                return redirect('booking2/booking_confirmation', booking_id=booking.id)
             except ValidationError as e:
                 messages.error(request, str(e))
-                return redirect('book_room')
+                return redirect('booking2/book_room')
     
     else:
         form = BookingForm()
