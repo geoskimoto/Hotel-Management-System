@@ -8,7 +8,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-
+from booking.forms import BookingForm
 
 
 from hotel.models import Coupon, CouponUsers, Hotel, Room, Booking, PublicNews, MemberNews, FoodServices, HotelGallery, HotelFeatures, RoomType, Notification, Bookmark, Review
@@ -29,25 +29,20 @@ def index(request):
     return render(request, "hotel/index.html", context)
 
 
+# This is to go to the hotel detail page which is where the booking
+#  of a room actually takes place (i.e. when you hit "make a booking"
+# in the admin dashboard it uses this view and template).
 def hotel_detail(request, slug):
     hotel = Hotel.objects.get(status="Live", slug=slug)
-    try:
-        reviews = Review.objects.filter(user=request.user, hotel=hotel)
-    except:
-        reviews = None
-    all_reviews = Review.objects.filter(hotel=hotel, active=True)
-    
-    if request.user.is_authenticated:
-        bookmark = Bookmark.objects.filter(user=request.user, hotel=hotel)
-    else:
-        bookmark = None
+    print(f"Hotel has the following room types: {hotel.roomtype_set.all()}")  # Debugging line
+    form = BookingForm()
     context = {
         "hotel":hotel,
-        "bookmark":bookmark,
-        "reviews":reviews,
-        "all_reviews":all_reviews,
+        "form":form
+        
     }
-    return render(request, "hotel/hotel_detail.html", context)
+    return render(request, "hotel/hotel_detail.html",  context=context) # {'form': form}) #,
+
 
 
 def room_type_detail(request, slug, rt_slug):
@@ -82,15 +77,16 @@ def room_type_detail(request, slug, rt_slug):
     return render(request, "hotel/room_type_detail.html", context)
 
 
-
+#This is the view to see items in the shopping cart.
 def selected_rooms(request):
     # request.session.pop('selection_data_obj', None)
 
     total = 0
     room_count = 0
     total_days = 0
-    adult = 0 
+    members = 0 
     children = 0 
+    guests = 0
     checkin = "0" 
     checkout = "" 
     children = 0 
@@ -105,7 +101,7 @@ def selected_rooms(request):
 
                 checkin = item["checkin"]
                 checkout = item["checkout"]
-                adult = int(item["adult"])
+                members = int(item["adult"])
                 children = int(item["children"])
                 room_type_ = item["room_type"]
                 room_id = int(item["room_id"])
@@ -120,8 +116,8 @@ def selected_rooms(request):
                 
             date_format = "%Y-%m-%d"
             checkin_date = datetime.strptime(checkin, date_format)
-            checout_date = datetime.strptime(checkout, date_format)
-            time_difference = checout_date - checkin_date
+            checkout_date = datetime.strptime(checkout, date_format)
+            time_difference = checkout_date - checkin_date
             total_days = time_difference.days
 
             full_name = request.POST.get("full_name")
@@ -134,7 +130,7 @@ def selected_rooms(request):
                 check_in_date=checkin,
                 check_out_date=checkout,
                 total_days=total_days,
-                num_adults=adult,
+                num_members=members,
                 num_children=children,
                 full_name=full_name,
                 email=email,
@@ -156,9 +152,11 @@ def selected_rooms(request):
 
                 room_count += 1
                 days = booking.total_days
-                price = booking.room_type.price
-
-                room_price = price * room_count
+                member_price = booking.room_type.member_price
+                children_price = booking.room_type.children_price
+                price = booking.room_type.member_price
+                
+                room_price = member_price * room_count
                 total = room_price * days
 
                 # print("room_price ==",room_price)
@@ -195,9 +193,11 @@ def selected_rooms(request):
 
             room_count += 1
             days = total_days
-            price = room_type.price
-
-            room_price = price * room_count
+            member_price = booking.room_type.member_price
+            children_price = booking.room_type.children_price
+            price = booking.room_type.member_price
+            
+            room_price = member_price * room_count
             total = room_price * days
             
             hotel = Hotel.objects.get(id=id)

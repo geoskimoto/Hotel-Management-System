@@ -37,14 +37,14 @@ class HotelAdmin(ImportExportModelAdmin):
 
 
 class RoomAdmin(ImportExportModelAdmin):
-    list_display = ['hotel' ,'room_number',  'room_type', 'price', 'number_of_beds' ,'is_available']
+    list_display = ['hotel' ,'room_number',  'room_type', 'member_price', 'child_price', 'guest_price', 'number_of_beds' ,'is_available']
     list_per_page = 100
 
 
 class BookingAdmin(ImportExportModelAdmin):
     inlines = [ActivityLog_Tab, StaffOnDuty_Tab]
     list_filter = [ 'hotel', 'room_type', 'check_in_date', 'check_out_date', 'is_active' , 'checked_in' ,'checked_out']
-    list_display = ['booking_id', 'user', 'hotel', 'room_type', 'rooms', 'total', 'total_days', 'num_adults', 'num_children', 'check_in_date', 'check_out_date', 'is_active' , 'checked_in' ,'checked_out']
+    list_display = ['booking_id', 'user', 'hotel', 'room_type', 'rooms', 'total', 'total_days', 'num_members', 'num_children', 'check_in_date', 'check_out_date', 'is_active' , 'checked_in' ,'checked_out']
     search_fields = ['booking_id', 'user__username', 'user__email']
     list_per_page = 100
 
@@ -71,6 +71,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Hotel, HotelAdmin)
+admin.site.register(RoomType)
 admin.site.register(Room, RoomAdmin)
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(FoodServices, FoodServicesAdmin)

@@ -8,22 +8,23 @@ from .booking_logic import check_room_availability_data, calculate_room_selectio
 
 
 
-def check_room_availability(request):
-    if request.method == "POST":
-        id = request.POST.get("hotel-id")
-        checkin = request.POST.get("checkin")
-        checkout = request.POST.get("checkout")
-        adult = request.POST.get("adult")
-        children = request.POST.get("children")
-        room_type = request.POST.get("room-type")
+# def check_room_availability(request):
+#     if request.method == "POST":
+#         id = request.POST.get("hotel-id")
+#         checkin = request.POST.get("checkin")
+#         checkout = request.POST.get("checkout")
+#         adult = request.POST.get("adult")
+#         children = request.POST.get("children")
+#         room_type = request.POST.get("room-type")
 
-        hotel, room_type = check_room_availability_data(id, checkin, checkout, room_type)
+#         hotel, room_type = check_room_availability_data(id, checkin, checkout, room_type)
 
-        url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type.slug])
-        url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&adult={adult}&children={children}&room_type={room_type}"
-        return HttpResponseRedirect(url_with_params)
-    else:
-        return redirect("hotel:index")
+#         url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type.slug])
+#         print(url)
+#         url_with_params = f"{url}?hotel-id={id}&checkin={checkin}&checkout={checkout}&adult={adult}&children={children}&room_type={room_type}"
+#         return HttpResponseRedirect(url_with_params)
+#     else:
+#         return redirect("hotel:index")
 
 
 def booking_data(request, slug):
@@ -33,7 +34,37 @@ def booking_data(request, slug):
     }
     return render(request, "booking/booking_data.html", context)
 
+def check_room_availability(request):
+    if request.method == "POST":
+        # Get form data from request.POST
+        
+        hotel_id = request.POST.get("hotel_id")  # This is if you have a hidden field for hotel-id
+        checkin = request.POST.get("check_in_date")
+        checkout = request.POST.get("check_out_date")
+        num_members = request.POST.get("num_members")
+        num_children = request.POST.get("num_children")
+        num_guests = request.POST.get("num_guests")
+        room_type_slug= request.POST.get("room_type")
+        print(f"I'm in check_room_availability() in hotel.views. Received room_type: {room_type_slug}")  # Debugging line
+        print(f"I'm in check_room_availability() in hotel.views. Received hotel_id: {hotel_id}")  # Debugging line
 
+        # Call your function with the form data
+        # hotel, room_type_obj = check_room_availability_data(
+        #     hotel_id, checkin, checkout, room_type_slug,
+        # )
+        hotel = Hotel.objects.get(status="Live", id=hotel_id)
+        # room_type = RoomType.objects.get(hotel=hotel, slug=room_type_slug)
+        
+
+        # Construct the URL for room type details page with query parameters
+        url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type_slug]) #room_type.slug])
+        url_with_params = f"{url}?hotel-id={hotel_id}&checkin={checkin}&checkout={checkout}&adult={num_members}&children={num_children}&guests={num_guests}&room_type={room_type_slug}" #{room_type}"
+
+        return HttpResponseRedirect(url_with_params)
+    else:
+        return redirect("hotel:index")
+
+    
 def add_to_selection(request):
     room_selection = {
         str(request.GET['id']): {

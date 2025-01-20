@@ -1,0 +1,97 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+        <div class="clearfix"></div>
+
+
+
+        <div class="container">
+            <div class="row utf_sticky_main_wrapper">
+                <div class="col-lg-8 col-md-8">
+
+
+                    <div class="utf_listing_section">
+                        <h3 class="utf_listing_headline_part margin-top-50 margin-bottom-40">Pricing</h3>
+                        <div class="show-more">
+                            <div class="utf_pricing_list_section">
+                                <h4>Room Types</h4>
+                                <ul>
+                                    
+                                    {% for r in hotel.hotel_room_types %}
+                                        <li>
+                                            <h5>
+                                                {{r.type}} {{r.rid}} 
+                                                <!-- <sub class="ppl-offer label-light-success">20% Off</sub> -->
+                                            </h5>
+                                            <p><strong>Beds :</strong> {{r.number_of_beds}} - <strong>Rooms:</strong> {{ r.rooms_count }}</p>
+                                            <span>${{r.price}}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="#" class="show-more-button" data-more-title="Show More" data-less-title="Show Less"><i class="fas fa-down-arrow"></i></a>
+                    </div>
+
+
+
+
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4 col-md-4 margin-top-75 sidebar-search">
+                    <!-- <div class="verified-badge with-tip margin-bottom-30" data-tip-content="Purchase ticket has been verified and belongs business owner or manager."> <i class="fas fa-check-circle"></i> Now Available</div> -->
+                    <div class="utf_box_widget booking_widget_box">
+                        <h3><i class="fa fa-calendar"></i> Booking</h3>
+                        
+                        <form class="row with-forms margin-top-0" method="POST" action="{% url 'booking:check_room_availability' %}">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{hotel.id}}" name="hotel-id" id="">
+                            <div class="col-lg-12 col-md-12 select_date_box">
+                                <label for="">Check-in Date</label>
+                                <input type="date" id="date-picker" name="checkin" placeholder="Select Date">
+                            </div>
+                            <div class="col-lg-12 col-md-12 select_date_box">
+                                <label for="">Check-out Date</label>
+                                <input type="date" name="checkout" id="date-picker" placeholder="Select Date">
+                            </div>
+                            <div class="with-forms">
+                                <div class="col-lg-12 col-md-12">
+                                    <a href="#">Guests <span class="qtyTotal" name="qtyTotal">1</span></a>
+                                    <div class="panel-dropdown-content">
+                                        <div class="qtyButtons">
+                                            <div class="qtyTitle">Adults</div>
+                                            <input type="text" name="adult" value="1">
+                                        </div>
+                                        <div class="qtyButtons">
+                                            <div class="qtyTitle">Childrens</div>
+                                            <input type="text" name="children" value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="with-forms margin-top-30">
+                                <div class="col-lg-12 col-md-12 ">
+                                    <a href="#">Select Room Type</a>
+                                    <select name="room-type" class="utf_chosen_select_single" required>
+                                        <option value="">Select Room</option>
+                                        {% for r in hotel.hotel_room_types %}
+                                            <option value="{{r.slug}}">{{r.type}}</option>
+                                        {% endfor %}
+                                      </select>
+                                </div>
+                            </div>
+                           
+                            <button type="submit" class="utf_progress_button button fullwidth_block margin-top-5">Check Availability</button>
+                        </form>
+                        
+                        <!-- <button class="like-button add_to_wishlist"><span class="like-icon"></span> Add to Wishlist</button> -->
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ 
+{% endblock content %}

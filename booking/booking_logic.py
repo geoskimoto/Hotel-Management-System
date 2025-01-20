@@ -1,11 +1,33 @@
 from datetime import datetime
 from hotel.models import Hotel, RoomType
 
+from django.core.exceptions import ObjectDoesNotExist
+
+
+# retrieves the hotel and room type information to be used in the check_room_availabilty view.
 def check_room_availability_data(id, checkin, checkout, room_type_slug):
-    hotel = Hotel.objects.get(status="Live", id=id)
-    room_type = RoomType.objects.get(hotel=hotel, slug=room_type_slug)
+    print(id)
+    print(checkin)
+    print(checkout)
+    print(room_type_slug)
+    
+    try:
+        hotel = Hotel.objects.get(status="Live", id=id)
+        print(f"I'm in check_room_availability_check() in booking.booking_logic. Hotel found: {hotel}")  # Debugging line
+    except ObjectDoesNotExist:
+        print("Hotel not found")  # Debugging line
+        return None, None
+    
+        print(f"Room type slug: {room_type_slug}")  # Debugging line
+    try:
+        room_type = RoomType.objects.get(hotel=hotel, slug=room_type_slug)
+        print(f"I'm in check_room_availability_check() in booking.booking_logic. Room type found: {room_type}")  # Debugging line
+    except ObjectDoesNotExist:
+        print("I'm in check_room_availability_check() in booking.booking_logic. Room type not found")  # Debugging line
+        return hotel, None
 
     return hotel, room_type
+
 
 def calculate_room_selection_price(room_selection):
     total = 0

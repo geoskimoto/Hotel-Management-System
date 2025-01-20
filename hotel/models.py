@@ -1,5 +1,4 @@
-
-
+from django.conf import settings
 from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
 from django.template.defaultfilters import escape
@@ -8,10 +7,10 @@ from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from django.core.validators import MinValueValidator, MaxValueValidator
 from .validators import validate_attachment_file_size
-
+from django.core.exceptions import ValidationError
 from userauths.models import User
-
 import shortuuid
+from datetime import timedelta
 from taggit.managers import TaggableManager
 
 
@@ -60,15 +59,15 @@ DISCOUNT_TYPE = (
 
 PAYMENT_STATUS = (
     ("paid", "Paid"),
-    ("pending", "Pending"),
+    # ("pending", "Pending"),
     ("processing", "Processing"),
     ("cancelled", "Cancelled"),
     ("initiated", 'Initiated'),
     ("failed", 'failed'),
-    ("refunding", 'refunding'),
+    # ("refunding", 'refunding'),
     ("refunded", 'refunded'),
-    ("unpaid", 'unpaid'),
-    ("expired", 'expired'),
+    # ("unpaid", 'unpaid'),
+    # ("expired", 'expired'),
 )
 
 
@@ -179,7 +178,9 @@ class HotelFAQs(models.Model):
 class RoomType(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     type = models.CharField(max_length=10)
-    price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    member_price = models.DecimalField(max_digits=12, decimal_places=2, default=1.00)
+    child_price = models.DecimalField(max_digits=12, decimal_places=2, default=1.00)
+    guest_price = models.DecimalField(max_digits=12, decimal_places=2, default=1.00)
     number_of_beds = models.PositiveIntegerField(default=1)
     room_capacity = models.PositiveIntegerField(default=1)
     rtid = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
@@ -187,7 +188,7 @@ class RoomType(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.type} - {self.hotel.name} - {self.price}"
+        return f"{self.type} - {self.hotel.name}"
 
     def rooms_count(self):
         return Room.objects.filter(room_type=self).count()
@@ -212,8 +213,12 @@ class Room(models.Model):
     def __str__(self):
         return f"{self.hotel.name} - {self.room_type.type} -  Room {self.room_number}"
 
-    def price(self):
-        return self.room_type.price
+    def member_price(self):
+        return self.room_type.member_price
+    def child_price(self):
+        return self.room_type.member_price
+    def guest_price(self):
+        return self.room_type.member_price
     
     def number_of_beds(self):
         return self.room_type.number_of_beds
@@ -230,15 +235,18 @@ class Booking(models.Model):
     
     hotel = models.ForeignKey(Hotel, on_delete=models.SET_NULL, null=True)
     room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
-    room = models.ManyToManyField(Room)
+    # room = models.ManyToManyField(Room)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='bookings', null=True)
+
     before_discount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     total = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     saved = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     check_in_date = models.DateField()
     check_out_date = models.DateField()
     total_days = models.PositiveIntegerField(default=0)
-    num_adults = models.PositiveIntegerField(default=1)
+    num_members = models.PositiveIntegerField(default=1)
     num_children = models.PositiveIntegerField(default=0)
+    num_guests = models.PositiveIntegerField(default=0)
     checked_in = models.BooleanField(default=False)
     checked_out = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -250,13 +258,64 @@ class Booking(models.Model):
     success_id = ShortUUIDField(length=300, max_length=505, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
     booking_id = ShortUUIDField(unique=True, length=10, max_length=20, alphabet="abcdefghijklmnopqrstuvxyz1234567890")
 
-
     def __str__(self):
         return f"{self.booking_id}"
     
     def rooms(self):
         return self.room.all().count()
     
+    def validation_checks(self):
+        """
+        Custom validations for booking: ensure room is available, dates are valid, occupancy is within limits.
+        """
+        # Booking must not overlap
+        if Booking.objects.filter(room=self.room, check_in_date__lt=self.check_out_date, check_out_date__gt=self.check_in_date).exists():
+            raise ValidationError(f"The room {self.room.name} is already booked for these dates.")
+
+        # Check against blocked dates for the room
+        if BlockedDate.objects.filter(room=self.room, start_date__lt=self.check_out_date, end_date__gt=self.check_in_date).exists():
+            raise ValidationError(f"The room {self.room.name} is blocked for these dates.")
+        
+        if BlockedDate.objects.filter(room=None, start_date__lt=self.check_out_date, end_date__gt=self.check_in_date).exists():
+            raise ValidationError("These dates are globally blocked for all rooms.")
+
+        # Ensure check-out is after check-in
+        if self.check_out_date <= self.check_in_date:
+            raise ValidationError("Check-out date must be after check-in date.")
+        
+        # Ensure booking dates are not in the past
+        if self.check_in_date < settings.MIN_BOOKING_DATE:
+            raise ValidationError("Booking cannot be made for past dates.")
+        
+        # Ensure booking stays are within the allowed duration window
+        booking_duration = self.check_out_date - self.check_in_date
+        if booking_duration < timedelta(days=settings.MIN_STAY_DAYS):
+            raise ValidationError(f"Stay must be at least {settings.MIN_STAY_DAYS} days.")
+        
+        if booking_duration > timedelta(days=settings.MAX_STAY_DAYS):
+            raise ValidationError(f"Stay cannot exceed {settings.MAX_STAY_DAYS} days.")
+        
+        # Ensure the number of occupants is within the room's capacity
+        if self.occupants > self.room.max_occupants:
+            raise ValidationError(f"Room capacity exceeded. Maximum occupants: {self.room.max_occupants}.")
+        
+    def save(self, *args, **kwargs):
+        # Calculate total days before saving
+        self.total_days = (self.check_out_date - self.check_in_date).days
+        # Run custom validation checks
+        self.validation_checks()
+        super(Booking, self).save(*args, **kwargs)
+
+
+class BlockedDate(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='blocked_dates')
+    start_date = models.DateField()
+    end_date = models.DateField()
+    reason = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"Blocked from {self.start_date} to {self.end_date} for {self.reason}"
+        
 class ActivityLog(models.Model):
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
     guest_out = models.DateTimeField()
