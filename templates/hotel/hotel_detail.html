@@ -55,59 +55,58 @@
 
 <!-- Sidebar -->
 <!-- <div class="col-lg-4 col-md-4 margin-top-75 sidebar-search"> -->
-    <div class="clearfix"></div>
+<div class="clearfix"></div>
+<!-- Sidebar with booking form -->
 
-                <!-- Sidebar with booking form -->
-                <div class="col-lg-4 col-md-4">
-                    <div class="utf_booking_form_container">
-                        <h3 class="utf_section_heading">Booking Form</h3>
-                        <form method="POST" action="{% url 'booking:check_room_availability' %}">
-                            {% csrf_token %}
-                            <input type="hidden" value="{{hotel.id}}" name="hotel_id" id="hotel_id">
-                            <!-- <div type="hidden" name="room_type" value="room_type_slug", id="room_type_slug">
-                                {{ form.room_type}}
-                            </div>     -->
-                            
-                            <div class="col-lg-12 col-md-12 utf_input_container">
-                                <label for="check_in_date">Check-in Date</label>
-                                {{ form.check_in_date }}
-                            </div>
-                            <div class="col-lg-12 col-md-12 utf_input_container">
-                                <label for="check_out_date">Check-out Date</label>
-                                {{ form.check_out_date }}
-                            </div>
-                            <!-- <div class="col-lg-12 col-md-12 utf_input_container">
-                                {{ form.room_type }}
-                            </div> -->
-                            <div class="col-lg-12 col-md-12 ">
-                                <a href="#">Select Room Type</a>
-                                <select name="room_type" class="utf_chosen_select_single" required>
-                                    <!-- <option value="">Select Room</option> -->
-                                    {% for r in hotel.hotel_room_types %}
-                                        <option value="{{r.slug}}">{{r.type}}</option>
-                                    {% endfor %}
-                                  </select>
-                            </div>
-                            <div class="col-lg-12 col-md-12 utf_input_container">
-                                {{ form.room }}
-                            </div>
-                            <div class="col-lg-12 col-md-12 utf_input_container">
-                                {{ form.num_members }}
-                            </div>
-                            <div class="col-lg-12 col-md-12 utf_input_container">
-                                {{ form.num_children }}
-                            </div>
-                            <div class="col-lg-12 col-md-12 utf_input_container">
-                                {{ form.num_guests }}
-                            </div>
-                            <button type="submit" class="utf_progress_button button fullwidth_block margin-top-5">
-                                Check Availability
-                            </button>
-                        </form>
-                    </div>
-                </div>
+<div class="col-lg-4">
+    <div class=" booking_widget_box" style="border: 1px dashed rgba(42, 1, 119, 0.61); padding: 14px; border-radius: 10px;">
+        <h3 class="utf_section_heading">Check Availability</h3>
+        <form method="POST" action="{% url 'booking:check_room_availability' %}">
+            {% csrf_token %}
+            <input type="hidden" value="{{hotel.id}}" name="hotel_id" id="hotel_id">
+            <!-- <div type="hidden" name="room_type" value="room_type_slug", id="room_type_slug">
+                {{ form.room_type}}
+            </div>     -->
+            
+            <div class="col-lg-12 col-md-12 utf_input_container">
+                <label for="check_in_date">Check-in Date</label>
+                {{ form.check_in_date }}
             </div>
-        </div>
+            <div class="col-lg-12 col-md-12 utf_input_container">
+                <label for="check_out_date">Check-out Date</label>
+                {{ form.check_out_date }}
+            </div>
+            <!-- <div class="col-lg-12 col-md-12 utf_input_container">
+                {{ form.room_type }}
+            </div> -->
+            <div class="col-lg-12 col-md-12 tf_input_container">
+                <label for="select_room_type">Select Room Type</label>
+                <select name="room_type" class="utf_chosen_select_single" required>
+                    <!-- <option value="">Select Room</option> -->
+                    {% for r in hotel.hotel_room_types %}
+                        <option value="{{r.slug}}">{{r.type}}</option>
+                    {% endfor %}
+                    </select>
+            </div>
+            <div class="col-lg-12 col-md-12 utf_input_container">
+                <label for="num_members">Select Number of Members</label>
+                {{ form.num_members }}
+            </div>
+            <div class="col-lg-12 col-md-12 utf_input_container">
+                <label for="num_children">Select Number of Children</label>
+                {{ form.num_children }}
+            </div>
+            <div class="col-lg-12 col-md-12 utf_input_container">
+                <label for="num_guests">Select Number of Guests</label>
+                {{ form.num_guests }}
+            </div>
+            <button type="submit" class="utf_progress_button button fullwidth_block margin-top-5">
+                Check Availability
+            </button>
+        </form>
+    </div>
+</div>         
+
 
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">

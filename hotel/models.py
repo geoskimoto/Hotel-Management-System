@@ -300,12 +300,27 @@ class Booking(models.Model):
             raise ValidationError(f"Room capacity exceeded. Maximum occupants: {self.room.max_occupants}.")
         
     def save(self, *args, **kwargs):
-        # Calculate total days before saving
-        self.total_days = (self.check_out_date - self.check_in_date).days
+        
         # Run custom validation checks
         self.validation_checks()
+        
+        # Calculate total days before saving
+        self.total_days = (self.check_out_date - self.check_in_date).days
+        
+        # Calculate total price:
+        member_price = self.room_type.member_price
+        child_price = self.room_type.child_price
+        guest_price = self.room_type.guest_price
+        
+        total_member_price = (member_price * self.num_members * self.total_days)
+        total_child_price = (child_price * self.num_members * self.total_days)
+        total_guest_price = (guest_price * self.num_members * self.total_days)
+        
+        self.total = total_member_price + total_child_price + total_guest_price
+        
         super(Booking, self).save(*args, **kwargs)
 
+        print(f"Booking for {self.user} from {self.check_in_date} to {self.check_out_date} was successfully instantiated and entered into the database.")
 
 class BlockedDate(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='blocked_dates')

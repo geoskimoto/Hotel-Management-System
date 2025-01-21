@@ -39,8 +39,8 @@ def check_room_availability(request):
         # Get form data from request.POST
         
         hotel_id = request.POST.get("hotel_id")  # This is if you have a hidden field for hotel-id
-        checkin = request.POST.get("check_in_date")
-        checkout = request.POST.get("check_out_date")
+        check_in_date = request.POST.get("check_in_date")
+        check_out_date = request.POST.get("check_out_date")
         num_members = request.POST.get("num_members")
         num_children = request.POST.get("num_children")
         num_guests = request.POST.get("num_guests")
@@ -55,10 +55,17 @@ def check_room_availability(request):
         hotel = Hotel.objects.get(status="Live", id=hotel_id)
         # room_type = RoomType.objects.get(hotel=hotel, slug=room_type_slug)
         
-
+        # request.session['hotel_id'] = hotel_id
+        # request.session['check_in_date'] = check_in_date
+        # request.session['check_out_date'] = check_out_date
+        # request.session['num_members'] = num_members
+        # request.session['num_children'] = num_children
+        # request.session['num_guests'] = num_guests
+        # request.session['room_type_slug'] = room_type_slug
+        
         # Construct the URL for room type details page with query parameters
         url = reverse("hotel:room_type_detail", args=[hotel.slug, room_type_slug]) #room_type.slug])
-        url_with_params = f"{url}?hotel-id={hotel_id}&checkin={checkin}&checkout={checkout}&adult={num_members}&children={num_children}&guests={num_guests}&room_type={room_type_slug}" #{room_type}"
+        url_with_params = f"{url}?hotel-id={hotel_id}&checkin={check_in_date}&checkout={check_out_date}&adult={num_members}&children={num_children}&guests={num_guests}&room_type={room_type_slug}" #{room_type}"
 
         return HttpResponseRedirect(url_with_params)
     else:

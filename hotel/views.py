@@ -29,12 +29,12 @@ def index(request):
     return render(request, "hotel/index.html", context)
 
 
-# This is to go to the hotel detail page which is where the booking
+# This is to go to the hotel detail page which is where the booking/checking availability
 #  of a room actually takes place (i.e. when you hit "make a booking"
 # in the admin dashboard it uses this view and template).
 def hotel_detail(request, slug):
     hotel = Hotel.objects.get(status="Live", slug=slug)
-    print(f"Hotel has the following room types: {hotel.roomtype_set.all()}")  # Debugging line
+    print(f"I'm in hotel_detail() in booking.views.  Hotel has the following room types: {hotel.roomtype_set.all()}")  # Debugging line
     form = BookingForm()
     context = {
         "hotel":hotel,
@@ -44,34 +44,45 @@ def hotel_detail(request, slug):
     return render(request, "hotel/hotel_detail.html",  context=context) # {'form': form}) #,
 
 
-
+# After you hit "Check Availability" in the hotel_detail.html (view above) it takes you to room_type_detail.html
+# where you see a collection of rooms that are available.
 def room_type_detail(request, slug, rt_slug):
     hotel = Hotel.objects.get(status="Live", slug=slug)
     room_type = RoomType.objects.get(hotel=hotel, slug=rt_slug)
     rooms = Room.objects.filter(room_type=room_type, is_available=True)
 
     id = request.GET.get("hotel-id")
-    checkin = request.GET.get("checkin")
-    checkout = request.GET.get("checkout")
-    adult = request.GET.get("adult")
-    children = request.GET.get("children")
+    check_in_date = request.GET.get("check_in_date")
+    check_out_date = request.GET.get("check_out_date")
+    num_members = request.GET.get("num_members")
+    num_children = request.GET.get("num_children")
+    num_guests = request.GET.get("num_guests")
     room_type_ = request.GET.get("room-type")
 
-    print("checkin ======", checkin)
+    # request.session['hotel'] = hotel
+    # request.session['room_type'] = room_type
+    request.session['room_type_'] = room_type_
+    # request.session['rooms'] = rooms
+    request.session['check_in_date'] = check_in_date
+    request.session['check_out_date'] = check_out_date
+    request.session['num_members'] = num_members
+    request.session['num_children'] = num_children
+    request.session['num_guests'] = num_guests
+        
 
-    if not all([checkin, checkout]):
+    if not all([check_in_date, check_out_date]):
         messages.warning(request, "Please enter your booking data to check availability.")
         return redirect("booking:booking_data", hotel.slug)
-
+    
     context = {
         "hotel":hotel,
         "room_type":room_type,
         "rooms":rooms,
         "id":id,
-        "checkin":checkin,
-        "checkout":checkout,
-        "adult":adult,
-        "children":children,
+        "check_in_date":check_in_date,
+        "check_out_date":check_out_date,
+        "num_members":num_members,
+        "num_children":num_children,
         "room_type_":room_type_,
     }
     return render(request, "hotel/room_type_detail.html", context)
@@ -95,14 +106,16 @@ def selected_rooms(request):
 
         if request.method == "POST":
             for h_id, item in request.session['selection_data_obj'].items():
-                
+                print(f'item: {type(item)}')
                 id = int(item['hotel_id'])
+                print(id)
                 hotel_id = int(item['hotel_id'])
 
-                checkin = item["checkin"]
-                checkout = item["checkout"]
-                members = int(item["adult"])
-                children = int(item["children"])
+                check_in_date = item["check_in_date"]
+                check_out_date = item["check_out_date"]
+                num_members = int(item["num_members"])
+                num_children = int(item["num_children"])
+                num_guests = int(item['num_guests'])
                 room_type_ = item["room_type"]
                 room_id = int(item["room_id"])
                 
@@ -115,10 +128,10 @@ def selected_rooms(request):
 
                 
             date_format = "%Y-%m-%d"
-            checkin_date = datetime.strptime(checkin, date_format)
-            checkout_date = datetime.strptime(checkout, date_format)
-            time_difference = checkout_date - checkin_date
-            total_days = time_difference.days
+            check_in_date = datetime.strptime(check_in_date, date_format)
+            check_out_date = datetime.strptime(check_out_date, date_format)
+            # time_difference = check_out_date - check_in_date
+            # total_days = time_difference.days
 
             full_name = request.POST.get("full_name")
             email = request.POST.get("email")
@@ -127,16 +140,16 @@ def selected_rooms(request):
             booking = Booking.objects.create(
                 hotel=hotel,
                 room_type=room_type,
-                check_in_date=checkin,
-                check_out_date=checkout,
-                total_days=total_days,
-                num_members=members,
-                num_children=children,
+                check_in_date=check_in_date,
+                check_out_date=check_out_date,
+                # total_days=total_days,
+                num_members=num_members,
+                num_children=num_children,
+                num_guests=num_guests,
                 full_name=full_name,
                 email=email,
                 phone=phone
             )
-
             if request.user.is_authenticated:
                 booking.user = request.user
                 booking.save()
@@ -145,26 +158,26 @@ def selected_rooms(request):
                 booking.save()
 
 
-            for h_id, item in request.session['selection_data_obj'].items():
-                room_id = int(item["room_id"])
-                room = Room.objects.get(id=room_id)
-                booking.room.add(room)
+            # for h_id, item in request.session['selection_data_obj'].items():
+            #     room_id = int(item["room_id"])
+            #     room = Room.objects.get(id=room_id)
+            #     booking.room.add(room)
 
-                room_count += 1
-                days = booking.total_days
-                member_price = booking.room_type.member_price
-                children_price = booking.room_type.children_price
-                price = booking.room_type.member_price
+            #     room_count += 1
+            #     days = booking.total_days
+            #     member_price = booking.room_type.member_price
+            #     children_price = booking.room_type.child_price
+            #     price = booking.room_type.member_price
                 
-                room_price = member_price * room_count
-                total = room_price * days
+            #     room_price = member_price * room_count
+            #     total = room_price * days
 
                 # print("room_price ==",room_price)
                 # print("total ==",total)
             
-            booking.total += float(total)
-            booking.before_discount += float(total)
-            booking.save()
+            # booking.total += float(total)
+            # booking.before_discount += float(total)
+            # booking.save()
 
             messages.success(request, "Checkout Now!")
             return redirect("hotel:checkout", booking.booking_id)
@@ -172,33 +185,27 @@ def selected_rooms(request):
         hotel = None
 
         for h_id, item in request.session['selection_data_obj'].items():
-                
+            
+            
             id = int(item['hotel_id'])
+            print(id)
             hotel_id = int(item['hotel_id'])
 
-            checkin = item["checkin"]
-            checkout = item["checkout"]
-            adult = int(item["adult"])
-            children = int(item["children"])
+            check_in_date = item["check_in_date"]
+            check_out_date = item["check_out_date"]
+            num_members = int(item["num_members"])
+            num_children = int(item["num_children"])
+            num_guests = int(item['num_guests'])
             room_type_ = item["room_type"]
             room_id = int(item["room_id"])
             
+            user = request.user
+            hotel = Hotel.objects.get(id=id)
+            room = Room.objects.get(id=room_id)
+            room_type = RoomType.objects.get(id=room_type_)
+            
             room_type = RoomType.objects.get(id=room_type_)
 
-            date_format = "%Y-%m-%d"
-            checkin_date = datetime.strptime(checkin, date_format)
-            checout_date = datetime.strptime(checkout, date_format)
-            time_difference = checout_date - checkin_date
-            total_days = time_difference.days
-
-            room_count += 1
-            days = total_days
-            member_price = booking.room_type.member_price
-            children_price = booking.room_type.children_price
-            price = booking.room_type.member_price
-            
-            room_price = member_price * room_count
-            total = room_price * days
             
             hotel = Hotel.objects.get(id=id)
 
@@ -206,12 +213,12 @@ def selected_rooms(request):
         context = {
             "data":request.session['selection_data_obj'], 
             "total_selected_items": len(request.session['selection_data_obj']),
-            "total":total,
-            "total_days":total_days,
-            "adult":adult,
-            "children":children,   
-            "checkin":checkin,   
-            "checkout":checkout,   
+            "total":booking.total,
+            "total_days":booking.total_days,
+            "num_members":booking.num_members,
+            "num_children":booking.num_children,   
+            "check_in_date":check_in_date,   
+            "check_out_date":check_out_date,   
             "hotel":hotel,   
         }
 
